@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kcal Path — Wizard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container space-between">
+      <div class="brand">www<span class="dot">.</span>url<span class="dot">.</span>com</div>
+      <span class="badge" id="stepBadge">ขั้นตอน 1/5</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card wizard" id="wizard">
+      <div class="header">
+        <div class="progress"><div class="bar"></div></div>
+      </div>
+
+      <!-- Step 1: Gender -->
+      <section class="step stack" style="display:none">
+        <h2 style="margin:0">เพศ</h2>
+        <div class="radio-group">
+          <label class="option">
+            <input type="radio" name="gender" value="male">
+            ชาย
+          </label>
+          <label class="option">
+            <input type="radio" name="gender" value="female">
+            หญิง
+          </label>
+        </div>
+        <div id="genderError" class="error"></div>
+        <div class="space-between">
+          <button class="btn btn-outline prev" type="button">ยกเลิก</button>
+          <button class="btn btn-primary next" type="button">ถัดไป</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Age / Weight / Height -->
+      <section class="step stack" style="display:none">
+        <h2 style="margin:0">อายุ / น้ำหนัก / ส่วนสูง</h2>
+        <div class="grid-2">
+          <div class="stack">
+            <label for="age">อายุ (ปี)</label>
+            <input id="age" type="number" inputmode="numeric" min="5" max="120" placeholder="15">
+          </div>
+          <div class="stack">
+            <label for="weight">น้ำหนัก (กก.)</label>
+            <input id="weight" type="number" inputmode="numeric" min="20" max="300" placeholder="69">
+          </div>
+          <div class="stack">
+            <label for="height">ส่วนสูง (ซม.)</label>
+            <input id="height" type="number" inputmode="numeric" min="80" max="250" placeholder="175">
+          </div>
+        </div>
+        <div id="awwError" class="error"></div>
+        <div class="space-between">
+          <button class="btn btn-outline prev" type="button">ย้อนกลับ</button>
+          <button class="btn btn-primary next" type="button">ถัดไป</button>
+        </div>
+      </section>
+
+      <!-- Step 3: Activity -->
+      <section class="step stack" style="display:none">
+        <h2 style="margin:0">การขยับร่างกาย</h2>
+        <div class="activity-group">
+          <label class="option"><input type="radio" name="activity" value="none"> นั่งทำงาน ไม่ออกกำลังกาย</label>
+          <label class="option"><input type="radio" name="activity" value="light"> ออกกำลังกายเบา ๆ (1–3 วัน/สัปดาห์)</label>
+          <label class="option"><input type="radio" name="activity" value="moderate"> ปานกลาง (3–5 วัน/สัปดาห์)</label>
+          <label class="option"><input type="radio" name="activity" value="active"> หนัก (6–7 วัน/สัปดาห์)</label>
+          <label class="option"><input type="radio" name="activity" value="athlete"> หนักมาก (2 ครั้งต่อวัน)</label>
+        </div>
+        <div id="activityError" class="error"></div>
+        <div class="space-between">
+          <button class="btn btn-outline prev" type="button">ย้อนกลับ</button>
+          <button class="btn btn-primary next" type="button">ถัดไป</button>
+        </div>
+      </section>
+
+      <!-- Step 4: Goal -->
+      <section class="step stack" style="display:none">
+        <h2 style="margin:0">เป้าหมาย</h2>
+        <div class="goal-group">
+          <label class="option"><input type="radio" name="goal" value="lose"> ลดน้ำหนัก</label>
+          <label class="option"><input type="radio" name="goal" value="maintain"> รักษาน้ำหนักให้นิ่งที่</label>
+          <label class="option"><input type="radio" name="goal" value="gain"> เพิ่มน้ำหนัก</label>
+        </div>
+        <div id="goalError" class="error"></div>
+        <div class="space-between">
+          <button class="btn btn-outline prev" type="button">ย้อนกลับ</button>
+          <button class="btn btn-primary next" type="button">ถัดไป</button>
+        </div>
+      </section>
+
+      <!-- Step 5: Confirm -->
+      <section class="step stack" style="display:none">
+        <h2 style="margin:0">ยืนยันข้อมูล</h2>
+        <div class="card" style="padding:16px;">
+          <div class="grid-2">
+            <div class="stack">
+              <div><strong>เพศ:</strong> <span id="pv-gender">-</span></div>
+              <div><strong>อายุ:</strong> <span id="pv-age">-</span></div>
+              <div><strong>น้ำหนัก:</strong> <span id="pv-weight">-</span> กก.</div>
+              <div><strong>ส่วนสูง:</strong> <span id="pv-height">-</span> ซม.</div>
+            </div>
+            <div class="stack">
+              <div><strong>การขยับร่างกาย:</strong> <span id="pv-activity">-</span></div>
+              <div><strong>เป้าหมาย:</strong> <span id="pv-goal">-</span></div>
+            </div>
+          </div>
+        </div>
+        <div id="confirmError" class="error"></div>
+        <div class="space-between">
+          <button class="btn btn-outline prev" type="button">ย้อนกลับ</button>
+          <button class="btn btn-primary" id="confirmSubmit" type="button">ยืนยัน</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">© 2025 Kcal Path — Demo only</div>
+  </main>
+</body>
+</html>

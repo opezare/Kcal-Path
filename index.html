@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kcal Path — เข้าสู่ระบบ</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="container space-between">
+      <div class="brand">www<span class="dot">.</span>url<span class="dot">.</span>com</div>
+      <span class="badge">Demo</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="max-width:600px; margin: 60px auto; padding: 32px;">
+      <div class="stack-lg">
+        <div>
+          <h1 class="center" style="margin:0">เข้าสู่ระบบ</h1>
+          <p class="center hint" style="margin-top:8px">ตัวอย่างหน้า Login ตามดีไซน์ในไฟล์</p>
+        </div>
+
+        <form id="loginForm" class="stack">
+          <div class="stack">
+            <label for="email">อีเมล</label>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="username" required>
+          </div>
+          <div class="stack">
+            <label for="password">รหัสผ่าน</label>
+            <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+
+          <div id="loginError" class="error"></div>
+
+          <div class="space-between">
+            <button type="button" id="forgot" class="btn btn-ghost">Forgot Password</button>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer">© 2025 Kcal Path — Demo only</div>
+  </main>
+</body>
+</html>

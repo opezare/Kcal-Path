@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KcalPath - หน้าแรก</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-text">KcalPath</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-item active">หน้าแรก</a>
+            <a href="food-log.html" class="nav-item">บันทึกอาหาร</a>
+            <a href="stats.html" class="nav-item">สถิติ</a>
+            <a href="#" class="nav-item">ตั้งค่า</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="#" class="btn btn-primary">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <p class="hero-subheading">เริ่มต้นเส้นทางสุขภาพ</p>
+                    <h1 class="hero-title">สร้างชีวิต<br>ที่มีสุขภาพดี<br>ในแบบของคุณ</h1>
+                    <a href="food-log.html" class="btn btn-cta">เริ่มต้นใช้งาน</a>
+                </div>
+                <div class="hero-image-right">
+                    <img src="o.png" alt="Healthy Food">
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-summary" class="dashboard-section">
+            <h2 class="section-heading">สรุปสุขภาพประจำวัน</h2>
+            <div class="dashboard-grid-layout">
+                <div class="card summary-card large-card calorie-summary">
+                    <h3 class="card-title">พลังงานวันนี้</h3>
+                    <div class="progress-circle large" style="--progress: 65%;">
+                        <div class="circle-content">
+                            <div class="value" id="calorie-value">1230</div>
+                            <div class="unit">kcal</div>
+                        </div>
+                    </div>
+                    <p class="goal-text">จากเป้าหมาย <span id="daily-calorie-goal">1900</span> kcal</p>
+                    <a href="food-log.html" class="card-link">บันทึกอาหารเพิ่มเติม <span class="arrow">→</span></a>
+                </div>
+
+                <div class="card summary-card nutrient-summary">
+                    <h3 class="card-title">สารอาหารหลัก</h3>
+                    <div class="nutrients-grid-display">
+                        <div class="nutrient-item">
+                            <div class="progress-circle small" style="--progress: 75%;">
+                                <div class="circle-content">
+                                    <div class="value" id="protein-value">63</div>
+                                    <div class="unit">g</div>
+                                </div>
+                            </div>
+                            <span class="nutrient-label">โปรตีน</span>
+                        </div>
+                        <div class="nutrient-item">
+                            <div class="progress-circle small yellow-progress" style="--progress: 55%;">
+                                <div class="circle-content">
+                                    <div class="value" id="fat-value">37</div>
+                                    <div class="unit">g</div>
+                                </div>
+                            </div>
+                            <span class="nutrient-label">ไขมัน</span>
+                        </div>
+                        <div class="nutrient-item">
+                            <div class="progress-circle small brown-progress" style="--progress: 90%;">
+                                <div class="circle-content">
+                                    <div class="value" id="carb-value">120</div>
+                                    <div class="unit">g</div>
+                                </div>
+                            </div>
+                            <span class="nutrient-label">คาร์บ</span>
+                        </div>
+                    </div>
+                    <a href="food-log.html" class="card-link">ดูรายละเอียดสารอาหาร <span class="arrow">→</span></a>
+                </div>
+
+                <div class="card summary-card health-stats-summary">
+                    <h3 class="card-title">สถิติสุขภาพ</h3>
+                    <div class="health-stats-grid-display">
+                        <div class="stat-item">
+                            <div class="stat-value" id="bmi-value">23.5</div>
+                            <div class="stat-label">BMI</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="weight-value">70.2</div>
+                            <div class="stat-label">น้ำหนัก (kg)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="bmr-value">1782</div>
+                            <div class="stat-label">BMR (kcal)</div>
+                        </div>
+                    </div>
+                    <a href="stats.html" class="card-link">ดูประวัติสถิติทั้งหมด <span class="arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-section">
+            <h2 class="section-heading">เคล็ดลับสุขภาพประจำวัน</h2>
+            <div class="tips-grid">
+                <div class="tip-card card">
+                    <img src="https://via.placeholder.com/400x250/d0d0d0/ffffff?text=Tip+1" alt="Tip 1">
+                    <h3>วิธีดื่มน้ำให้เพียงพอ</h3>
+                    <p>การดื่มน้ำเป็นสิ่งสำคัญต่อสุขภาพที่ดี ดื่มวันละ 8 แก้ว เพื่อระบบเผาผลาญที่ดีขึ้น</p>
+                    <a href="#" class="card-link">อ่านเพิ่มเติม <span class="arrow">→</span></a>
+                </div>
+                <div class="tip-card card">
+                    <img src="https://via.placeholder.com/400x250/d0d0d0/ffffff?text=Tip+2" alt="Tip 2">
+                    <h3>5 วิธีเริ่มต้นออกกำลังกาย</h3>
+                    <p>สำหรับผู้เริ่มต้น การออกกำลังกายเบาๆ เช่น เดินเร็ว ช่วยเพิ่มพลังงานและลดน้ำหนัก</p>
+                    <a href="#" class="card-link">อ่านเพิ่มเติม <span class="arrow">→</span></a>
+                </div>
+                <div class="tip-card card">
+                    <img src="https://via.placeholder.com/400x250/d0d0d0/ffffff?text=Tip+3" alt="Tip 3">
+                    <h3>เมนูอาหารคลีนง่ายๆ</h3>
+                    <p>แนะนำเมนูอาหารคลีนที่ทำง่ายและได้สารอาหารครบถ้วน เหมาะสำหรับทุกวัน</p>
+                    <a href="#" class="card-link">อ่านเพิ่มเติม <span class="arrow">→</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dailyData = {
+                calories: 1230,
+                protein: 63,
+                fat: 37,
+                carb: 120,
+                sodium: 1400,
+                bmi: 23.5,
+                weight: 70.2,
+                height: 173,
+                bmr: 1782,
+                daily_calorie_goal: 1900,
+                protein_goal: 85,
+                fat_goal: 65,
+                carb_goal: 220
+            };
+
+            // อัปเดตค่าตัวเลขบนหน้าแดชบอร์ด
+            document.getElementById('calorie-value').textContent = dailyData.calories;
+            document.getElementById('daily-calorie-goal').textContent = dailyData.daily_calorie_goal;
+            document.getElementById('protein-value').textContent = dailyData.protein;
+            document.getElementById('fat-value').textContent = dailyData.fat;
+            document.getElementById('carb-value').textContent = dailyData.carb;
+            document.getElementById('bmi-value').textContent = dailyData.bmi;
+            document.getElementById('weight-value').textContent = dailyData.weight;
+            document.getElementById('bmr-value').textContent = dailyData.bmr;
+
+            // อัปเดตวงกลมแสดงผล
+            document.querySelector('.summary-card.calorie-summary .progress-circle.large').style.setProperty('--progress', (dailyData.calories / dailyData.daily_calorie_goal) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(1) .progress-circle').style.setProperty('--progress', (dailyData.protein / dailyData.protein_goal) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(2) .progress-circle').style.setProperty('--progress', (dailyData.fat / dailyData.fat_goal) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(3) .progress-circle').style.setProperty('--progress', (dailyData.carb / dailyData.carb_goal) * 100);
+        });
+    </script>
+</body>
+</html>

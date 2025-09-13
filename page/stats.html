@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KcalPath - สถิติของฉัน</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-text">KcalPath</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html" class="nav-item">หน้าแรก</a>
+            <a href="food-log.html" class="nav-item">บันทึกอาหาร</a>
+            <a href="stats.html" class="nav-item active">สถิติ</a>
+            <a href="#" class="nav-item">ตั้งค่า</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="#" class="btn btn-primary">เข้าสู่ระบบ</a>
+        </div>
+    </header>
+
+    <main class="main-content page-content">
+        <h1 class="page-header-title">ประวัติสถิติสุขภาพของคุณ</h1>
+
+        <section class="stats-overview-section">
+            <div class="card stat-summary-card">
+                <h3>น้ำหนักปัจจุบัน</h3>
+                <p class="summary-value">70.2 kg</p>
+                <p class="summary-trend">ลดลง 0.5 kg จากสัปดาห์ที่แล้ว</p>
+            </div>
+            <div class="card stat-summary-card">
+                <h3>BMI ล่าสุด</h3>
+                <p class="summary-value">23.5</p>
+                <p class="summary-trend">อยู่ในเกณฑ์ปกติ</p>
+            </div>
+            <div class="card stat-summary-card">
+                <h3>แคลอรี่เฉลี่ย/วัน</h3>
+                <p class="summary-value">1650 kcal</p>
+                <p class="summary-trend">ต่ำกว่าเป้าหมายเล็กน้อย</p>
+            </div>
+        </section>
+
+        <section class="stats-charts-section">
+            <div class="card chart-card">
+                <h2 class="card-title">แนวโน้มแคลอรี่รายสัปดาห์</h2>
+                <canvas id="caloriesChart"></canvas>
+            </div>
+
+            <div class="card chart-card">
+                <h2 class="card-title">แนวโน้มน้ำหนักรายเดือน</h2>
+                <canvas id="weightChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Chart.register(ChartDataLabels);
+
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: 'var(--dark-gray)', font: { size: 10 } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: { color: 'var(--dark-gray)', font: { size: 10 } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        display: false
+                    }
+                }
+            };
+
+            const caloriesData = {
+                labels: ['สัปดาห์ 1', 'สัปดาห์ 2', 'สัปดาห์ 3', 'สัปดาห์ 4', 'สัปดาห์ 5', 'สัปดาห์ 6'],
+                datasets: [{
+                    label: 'แคลอรี่เฉลี่ย (kcal)',
+                    data: [1700, 1650, 1580, 1620, 1550, 1500],
+                    borderColor: 'var(--primary-green)',
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'var(--primary-green)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'var(--primary-green)'
+                }]
+            };
+
+            const caloriesCtx = document.getElementById('caloriesChart').getContext('2d');
+            new Chart(caloriesCtx, {
+                type: 'line',
+                data: caloriesData,
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                        ...commonChartOptions.scales,
+                        y: { ...commonChartOptions.scales.y, title: { display: true, text: 'kcal', color: 'var(--dark-gray)' } }
+                    },
+                     plugins: {
+                        ...commonChartOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            align: 'top',
+                            color: 'var(--text-color)',
+                            font: { size: 10, weight: 'bold' }
+                        }
+                    }
+                }
+            });
+
+            const weightData = {
+                labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'],
+                datasets: [{
+                    label: 'น้ำหนัก (kg)',
+                    data: [72, 71.5, 71, 70.8, 70.5, 70.2, 70, 69.8],
+                    borderColor: 'var(--yellow)',
+                    backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'var(--yellow)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'var(--yellow)'
+                }]
+            };
+
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            new Chart(weightCtx, {
+                type: 'line',
+                data: weightData,
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                        ...commonChartOptions.scales,
+                        y: { ...commonChartOptions.scales.y, title: { display: true, text: 'กิโลกรัม', color: 'var(--dark-gray)' } }
+                    },
+                    plugins: {
+                        ...commonChartOptions.plugins,
+                        datalabels: {
+                            display: true,
+                            align: 'top',
+                            color: 'var(--text-color)',
+                            font: { size: 10, weight: 'bold' }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

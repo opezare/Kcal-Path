@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KcalPath — Sports‑Tech Dashboard</title>
+  <!-- ฟอนต์ (Montserrat + Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ======================
+       ตัวแปรธีม
+       ======================*/
+    :root{
+      --bg: #0f1720; /* dark-slate background */
+      --panel:#0b1115;
+      --accent-green: #5cb85c;
+      --accent-yellow:#f0ad4e;
+      --accent-brown:#d9534f;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --glow: 0 8px 36px rgba(92,184,92,0.06);
+      --fast: 180ms;
+      --slow: 700ms;
+      --font-strong: 'Montserrat', system-ui, -apple-system, 'Poppins', sans-serif;
+      --font-base: 'Poppins', system-ui, -apple-system, 'Montserrat', sans-serif;
+    }
+
+    /* ======================
+       เบื้องต้น (global)
+       ======================*/
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font-base);
+      background:
+        radial-gradient(1200px 400px at 10% 10%, rgba(80,200,120,0.03), transparent 10%),
+        radial-gradient(800px 300px at 95% 90%, rgba(240,173,78,0.02), transparent 10%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 20%),
+        var(--bg);
+      color:#d6e6ea;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+    }
+
+    /* Grid layout */
+    .app{
+      display:grid;
+      grid-template-columns: 320px 1fr 360px;
+      grid-template-rows: 72px 1fr;
+      gap:20px;
+      height:calc(100vh - 56px);
+    }
+
+    /* Header */
+    header{
+      grid-column: 1 / -1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border-radius:12px;
+      padding:12px 18px;
+      box-shadow: var(--glow);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px
+    }
+    .logo-mark{
+      width:52px;height:52px;border-radius:10px;display:grid;place-items:center;
+      background: linear-gradient(135deg, rgba(92,184,92,0.12), rgba(240,173,78,0.06));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      font-family:var(--font-strong);font-weight:800;color:var(--accent-green);
+      transform:skewX(-8deg);
+    }
+    .brand h1{margin:0;font-family:var(--font-strong);font-weight:700;letter-spacing:0.6px}
+    .brand h1 span{color:var(--accent-yellow);font-weight:800}
+    .nav-capsules{display:flex;gap:10px}
+
+    /* Data capsule nav */
+    .nav-item{
+      padding:8px 14px;border-radius:999px;background:var(--glass);
+      display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.02);
+      transition:transform var(--fast) ease, box-shadow var(--fast) ease, border-color var(--fast) ease;
+      cursor:pointer;position:relative;overflow:hidden
+    }
+    .nav-item:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 6px 28px rgba(92,184,92,0.06);
+      border-color: rgba(92,184,92,0.18);
+    }
+    .nav-item .dot{width:10px;height:10px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 8px rgba(92,184,92,0.28)}
+
+    /* Left column (controls) */
+    .sidebar{
+      background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.012));
+      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:18px;height:100%;
+    }
+    .section-title{font-family:var(--font-strong);font-weight:700;color:#bfe6c4;margin-bottom:8px}
+
+    /* Mini cards */
+    .mini-card{background:var(--glass-2);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .caps-list{display:flex;flex-direction:column;gap:12px}
+
+    /* Center — main HUD */
+    .main{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:12px;padding:22px;border:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:20px;overflow:auto;height:100%;
+    }
+
+    /* HUD top row */
+    .hud-row{display:flex;gap:18px;align-items:center}
+
+    /* Kcal HUD */
+    .kcal-hud{
+      width:360px;height:360px;border-radius:14px;display:grid;place-items:center;position:relative;
+      background:linear-gradient(135deg, rgba(92,184,92,0.02), rgba(240,173,78,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      overflow:visible
+    }
+    .hud-svg{position:absolute;inset:18px}
+    /* ตัวเลขดิจิทัล */
+    .kcal-value{font-family:var(--font-strong);font-size:56px;letter-spacing:2px}
+    .kcal-sub{font-size:14px;color:#b7e7c0;margin-top:6px;display:flex;gap:8px;align-items:center}
+
+    /* Digital glitch on load */
+    .glitch{display:inline-block;position:relative}
+    .glitch::before,.glitch::after{
+      content:attr(data-text);position:absolute;left:0;top:0;mix-blend-mode:screen;opacity:0.6
+    }
+    .glitch::before{transform:translate(-2px,-2px);color:var(--accent-yellow);clip-path:polygon(0 0,100% 0,100% 40%,0 40%);animation:glitchTop 1.2s linear 1}
+    .glitch::after{transform:translate(2px,2px);color:var(--accent-brown);clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%);animation:glitchBot 1.2s linear 1}
+    @keyframes glitchTop{0%{transform:translate(-6px,-6px);opacity:0}50%{transform:translate(6px,-2px);opacity:1}100%{transform:translate(0,0);opacity:0.6}}
+    @keyframes glitchBot{0%{transform:translate(6px,6px);opacity:0}50%{transform:translate(-6px,2px);opacity:1}100%{transform:translate(0,0);opacity:0.6}}
+
+    /* rotating ring */
+    .ring{
+      width:260px;height:260px;border-radius:50%;position:relative;display:grid;place-items:center
+    }
+    .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+    .ring .center{position:absolute;display:grid;place-items:center}
+    .ring .segments{position:absolute;inset:0;transform-origin:center;animation:spinLinear 12s linear infinite}
+    @keyframes spinLinear{to{transform:rotate(360deg)}}
+
+    /* status color changes */
+    .status-low{color:var(--accent-brown);animation:pulseWarn 1.2s infinite}
+    @keyframes pulseWarn{0%{text-shadow:none}50%{text-shadow:0 0 16px rgba(217,83,79,0.6)}100%{text-shadow:none}}
+
+    /* right column — stats */
+    .rightcol{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.01));border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:18px;height:100%}
+
+    /* Vertical progress bars */
+    .nutrition{
+      display:flex;gap:18px;align-items:end;height:260px;justify-content:center
+    }
+    .nutri-bar{width:88px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:10px;padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border:1px solid rgba(255,255,255,0.02)}
+    .bar-track{width:36px;height:180px;border-radius:6px;background:rgba(0,0,0,0.18);display:flex;flex-direction:column-reverse;overflow:hidden;align-items:center}
+    .bar-fill{width:100%;height:0%;border-radius:6px;transition:height 1200ms cubic-bezier(.2,.9,.25,1)}
+    .nutri-label{margin-top:10px;font-weight:600}
+    .nutri-value{font-size:13px;color:#cfeadd}
+
+    /* data cubes */
+    .cubes{display:flex;gap:12px}
+    .cube{flex:1;padding:18px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:6px;align-items:flex-start;transition:transform var(--fast) ease}
+    .cube:hover{transform:translateY(-8px) scale(1.02)}
+    .cube .num{font-family:var(--font-strong);font-size:36px}
+    .cube .label{font-size:13px;color:#b7e7c0}
+
+    /* hologram popup */
+    .holo-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1200}
+    .holo{width:520px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 40px 120px rgba(0,0,0,0.7);backdrop-filter: blur(6px);transform:translateY(20px) scale(.98);opacity:0;transition:all 240ms ease}
+    .holo.show{opacity:1;transform:translateY(0) scale(1)}
+    .holo::after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-80px;width:420px;height:160px;background:radial-gradient(circle at center, rgba(92,184,92,0.06), transparent 30%);filter:blur(18px);z-index:-1}
+
+    /* micro-interactions */
+    .blink{animation:blink 1.4s linear infinite}
+    @keyframes blink{0%{opacity:1}50%{opacity:0.2}100%{opacity:1}}
+
+    /* responsive */
+    @media (max-width:1100px){
+      .app{grid-template-columns: 1fr;grid-template-rows:auto auto auto;}
+      .sidebar{order:3}
+      .rightcol{order:4}
+      .main{order:2}
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="KcalPath Dashboard">
+    <header>
+      <div class="brand">
+        <div class="logo-mark">KP</div>
+        <div>
+          <h1>Kcal<span>Path</span></h1>
+          <div style="font-size:12px;color:#9fcfb2">Sports‑Tech Health & Nutrition</div>
+        </div>
+      </div>
+
+      <nav class="nav-capsules" aria-label="เมนูหลัก">
+        <div class="nav-item" tabindex="0"><div class="dot"></div><div>แดชบอร์ด</div></div>
+        <div class="nav-item" tabindex="0"><div class="dot" style="background:var(--accent-yellow)"></div><div>โภชนาการ</div></div>
+        <div class="nav-item" tabindex="0"><div class="dot" style="background:var(--accent-brown)"></div><div>โปรไฟล์</div></div>
+      </nav>
+    </header>
+
+    <!-- left sidebar -->
+    <aside class="sidebar" aria-label="แผงควบคุมซ้าย">
+      <div>
+        <div class="section-title">ควบคุมการทดลอง</div>
+        <div class="caps-list">
+          <div class="mini-card">
+            <label>เป้าพลังงานประจำวัน (kcal)</label>
+            <input id="goalInput" type="range" min="800" max="3500" value="2000" style="width:100%">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px;color:#9fcfb2"><span>800</span><span>2000</span><span>3500</span></div>
+          </div>
+
+          <div class="mini-card">
+            <div style="display:flex;justify-content:space-between;align-items:center"><strong>โหมด</strong>
+              <div style="display:flex;gap:8px">
+                <button id="btnQuick" class="nav-item" style="padding:6px 8px;">ด่วน</button>
+                <button id="btnDeep" class="nav-item" style="padding:6px 8px;">วิเคราะห์</button>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:13px;color:#b7e7c0">คลิกที่การ์ดเพื่อดูรายละเอียดแบบ hologram</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">ประวัติการกินวันนี้</div>
+        <div class="mini-card">
+          <ol style="padding-left:18px;margin:0;font-size:13px;color:#bcdcc4">
+            <li>เช้า: ข้าว 1 จาน</li>
+            <li>สาย: กล้วย 1 ผล</li>
+            <li>กลางวัน: ข้าว+ไก่ย่าง</li>
+          </ol>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;font-size:12px;color:#6fae8e">เวอร์ชัน 1.0 • วันที่: 13 กันยายน 2025</div>
+    </aside>
+
+    <!-- main content -->
+    <main class="main" role="main">
+      <div class="hud-row">
+        <section class="kcal-hud" aria-labelledby="kcalTitle">
+          <svg class="hud-svg" viewBox="0 0 360 360" preserveAspectRatio="xMidYMid meet" aria-hidden>
+            <!-- static background grid lines -->
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="rgba(92,184,92,0.12)"/><stop offset="1" stop-color="rgba(240,173,78,0.03)"/></linearGradient>
+            </defs>
+            <circle cx="180" cy="180" r="140" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+            <g class="segments" transform="translate(180,180)">
+              <!-- small dashes around -->
+              <g id="dashes"></g>
+            </g>
+            <!-- rotating inner arc -->
+            <circle cx="180" cy="180" r="108" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="6" stroke-linecap="round" stroke-dasharray="20 60"/>
+          </svg>
+
+          <div class="ring">
+            <div class="segments" aria-hidden>
+              <!-- will be filled by JS to create animated segments -->
+            </div>
+            <div class="center">
+              <div style="text-align:center">
+                <div id="kcalTitle" style="font-size:12px;color:#9fd7b0;font-weight:700">แคลอรี่ที่เหลือ</div>
+                <div id="kcalValue" class="kcal-value"><span class="glitch" data-text="1230">1230</span> <small style="font-size:20px">kcal</small></div>
+                <div class="kcal-sub"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M13 2L3 14h7v8l10-12h-7z"></path></svg><span>พลังงาน</span></div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <aside style="flex:1;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px">
+            <div class="cube" id="cubeBMI" tabindex="0" role="button" aria-pressed="false">
+              <div class="label">ค่า BMI</div>
+              <div class="num" id="bmiVal">23</div>
+              <div style="font-size:12px;color:#9fcfb2">สถานะ: <span id="bmiState">ปกติ</span></div>
+            </div>
+            <div class="cube" id="cubeHeight" tabindex="0" role="button">
+              <div class="label">ส่วนสูง (ซม.)</div>
+              <div class="num" id="heightVal">173</div>
+              <div style="font-size:12px;color:#9fcfb2">ข้อมูลส่วนตัว</div>
+            </div>
+            <div class="cube" id="cubeWeight" tabindex="0" role="button">
+              <div class="label">น้ำหนัก (กก.)</div>
+              <div class="num" id="weightVal">70</div>
+              <div style="font-size:12px;color:#9fcfb2">เป้าหมาย: เพิ่มน้ำหนัก</div>
+            </div>
+          </div>
+
+          <div class="mini-card" style="flex:1;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-weight:700">สรุปการใช้พลังงานวันนี้</div>
+              <div style="font-size:12px;color:#9fcfb2">อัปเดตล่าสุด: <span id="lastUpdate">ขณะนี้</span></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:center;justify-content:center">
+              <!-- small sparkline -->
+              <svg id="sparkline" width="100%" height="64" viewBox="0 0 200 64" preserveAspectRatio="none"></svg>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Nutrition bars + small graphs -->
+      <div style="display:flex;gap:18px;align-items:flex-start">
+        <div style="flex:1">
+          <div class="section-title">โภชนาการ (วันนี้)</div>
+          <div class="nutrition" role="list">
+            <div class="nutri-bar" role="listitem">
+              <div class="bar-track">
+                <div id="fillProtein" class="bar-fill" style="background:linear-gradient(180deg,var(--accent-green), rgba(92,184,92,0.6));"></div>
+              </div>
+              <div class="nutri-label">โปรตีน</div>
+              <div class="nutri-value" id="valProtein">34 กรัม</div>
+            </div>
+
+            <div class="nutri-bar" role="listitem">
+              <div class="bar-track">
+                <div id="fillFat" class="bar-fill" style="background:linear-gradient(180deg,var(--accent-yellow), rgba(240,173,78,0.6));"></div>
+              </div>
+              <div class="nutri-label">ไขมัน</div>
+              <div class="nutri-value" id="valFat">52 กรัม</div>
+            </div>
+
+            <div class="nutri-bar" role="listitem">
+              <div class="bar-track">
+                <div id="fillSodium" class="bar-fill" style="background:linear-gradient(180deg,var(--accent-brown), rgba(217,83,79,0.6));"></div>
+              </div>
+              <div class="nutri-label">โซเดียม</div>
+              <div class="nutri-value" id="valSodium">1,200 กรัม</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width:420px">
+          <div class="section-title">กิจกรรมล่าสุด</div>
+          <div class="mini-card">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:54px;height:54px;border-radius:10px;background:var(--glass);display:grid;place-items:center;border:1px solid rgba(255,255,255,0.02)">🏃</div>
+              <div>
+                <div style="font-weight:700">วิ่ง 5 กม.</div>
+                <div style="font-size:13px;color:#bcdcc4">เผาผลาญ 420 kcal • 45 นาที</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="mini-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>รูปแบบการฝึก: HIIT</div>
+              <div style="font-weight:700;color:#cfeadd">เข้มข้น</div>
+            </div>
+            <div style="margin-top:10px;font-size:13px;color:#9fcfb2">แนะนำ: ดื่มน้ำ 250ml, ทานโปรตีนหลังฝึก</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- right column -->
+    <aside class="rightcol" aria-label="ข้อมูลขวา">
+      <div>
+        <div class="section-title">เครื่องมือวิเคราะห์</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="mini-card">ตัวเลือก: แสดงกราฟ 24 ชม. • เปรียบเทียบเมนู</div>
+          <div class="mini-card">คำแนะนำ: ปรับโปรตีน +20g หากฝึกหนัก</div>
+        </div>
+      </div>
+
+      <div style="margin-top:auto">
+        <div class="section-title">สถิติรายวัน</div>
+        <div style="display:flex;gap:10px;flex-direction:column">
+          <div class="mini-card">แคลอรี่รับ: 1780 kcal</div>
+          <div class="mini-card">แคลอรี่เผาผลาญ: 550 kcal</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- hologram popup -->
+  <div id="holoBackdrop" class="holo-backdrop" aria-hidden="true">
+    <div class="holo" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:800;font-family:var(--font-strong);font-size:20px">รายละเอียด</div>
+          <div style="font-size:12px;color:#9fcfb2">ข้อมูลเชิงลึก • Hologram</div>
+        </div>
+        <button id="closeHolo" style="background:none;border:0;color:#cfeadd;font-weight:700;cursor:pointer">ปิด ✕</button>
+      </div>
+      <div style="margin-top:16px;color:#cfeadd">รายละเอียดเชิงลึกของข้อมูล จะขึ้นที่นี่ เช่น เทรนด์ 7 วัน, คำแนะนำเชิงโภชนาการ และการคาดการณ์ตามกิจกรรม</div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================
+       โมดูล: ค่าตั้งต้น และ helper
+       ==========================*/
+    const state = {
+      kcal: 1230,
+      goal: 2000,
+      protein: 34, // g
+      fat: 52, // g
+      sodium: 1200, // mg
+      bmi: 23,
+      height: 173,
+      weight: 70
+    }
+
+    // อ้าง DOM
+    const kcalValueEl = document.getElementById('kcalValue');
+    const kcalNumEl = kcalValueEl.querySelector('.glitch');
+    const goalInput = document.getElementById('goalInput');
+    const fillProtein = document.getElementById('fillProtein');
+    const fillFat = document.getElementById('fillFat');
+    const fillSodium = document.getElementById('fillSodium');
+    const valProtein = document.getElementById('valProtein');
+    const valFat = document.getElementById('valFat');
+    const valSodium = document.getElementById('valSodium');
+    const bmiVal = document.getElementById('bmiVal');
+    const bmiState = document.getElementById('bmiState');
+    const sparkline = document.getElementById('sparkline');
+
+    /* ==========================
+       สร้าง segments รอบวง (visual effect)
+       ==========================*/
+    function createDashes(){
+      const group = document.getElementById('dashes');
+      const total = 40;
+      for(let i=0;i<total;i++){
+        const angle = (360/total)*i;
+        const el = document.createElementNS('http://www.w3.org/2000/svg','rect');
+        el.setAttribute('x',120);
+        el.setAttribute('y',-4);
+        el.setAttribute('width',14);
+        el.setAttribute('height',8);
+        el.setAttribute('rx',2);
+        el.setAttribute('fill','rgba(255,255,255,0.03)');
+        el.setAttribute('transform',`rotate(${angle}) translate(60)`);
+        group.appendChild(el);
+      }
+    }
+    createDashes();
+
+    /* ==========================
+       แสดงผลค่า nutrition (แท่งแนวตั้ง)
+       ==========================*/
+    function updateNutri(){
+      // ปรับเป็นเปอร์เซ็นต์แบบสมมติ
+      const pPct = Math.min(100, Math.round(state.protein / 100 * 100));
+      const fPct = Math.min(100, Math.round(state.fat / 100 * 100));
+      const sPct = Math.min(100, Math.round(state.sodium / 3000 * 100));
+
+      fillProtein.style.height = pPct + '%';
+      fillFat.style.height = fPct + '%';
+      fillSodium.style.height = sPct + '%';
+
+      valProtein.textContent = state.protein + ' กรัม';
+      valFat.textContent = state.fat + ' กรัม';
+      valSodium.textContent = state.sodium + ' มก.';
+    }
+
+    /* ==========================
+       BMI status
+       ==========================*/
+    function updateBMI(){
+      bmiVal.textContent = state.bmi;
+      if(state.bmi < 18.5){
+        bmiState.textContent = 'น้ำหนักน้อย';
+      }else if(state.bmi < 25){
+        bmiState.textContent = 'ปกติ';
+      }else if(state.bmi < 30){
+        bmiState.textContent = 'น้ำหนักเกิน';
+      }else{
+        bmiState.textContent = 'อ้วน';
+      }
+    }
+
+    /* ==========================
+       Sparkline (small graph) — สุ่มข้อมูลตัวอย่าง สำหรับ 24 จุด
+       ==========================*/
+    function drawSparkline(){
+      const w = 200, h = 64;
+      const points = Array.from({length:24}, ()=>Math.random()*40 + 20);
+      const max = Math.max(...points);
+      const step = w/(points.length-1);
+      let d = 'M 0 '+(h - (points[0]/max*h));
+      points.forEach((p,i)=>{d += (i? ' L '+(i*step)+' '+(h - (p/max*h)) : '');});
+      sparkline.setAttribute('viewBox',`0 0 ${w} ${h}`);
+      sparkline.innerHTML = `
+        <defs>
+          <linearGradient id="sg" x1="0" x2="0"><stop offset="0" stop-color="rgba(92,184,92,0.14)"/><stop offset="1" stop-color="rgba(240,173,78,0.06)"/></linearGradient>
+        </defs>
+        <path d="${d}" fill="none" stroke="url(#sg)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+      `;
+    }
+
+    /* ==========================
+       Digital Glitch boot effect (ตัวเลข 1230 กระพริบแล้วนิ่ง)
+       ==========================*/
+    function bootKcal(){
+      kcalNumEl.dataset.text = state.kcal;
+      // เล่น glitch แล้ว set ค่าเป็นปกติ
+      kcalNumEl.classList.add('glitch');
+      setTimeout(()=>{
+        kcalNumEl.classList.remove('glitch');
+        kcalNumEl.textContent = state.kcal;
+        // ถ้า kcal ต่ำกว่าจุดเป้าหมาย เตือน
+        if(state.kcal < state.goal * 0.6){
+          kcalNumEl.parentElement.classList.add('status-low');
+        }
+      }, 1200);
+    }
+
+    /* ==========================
+       Event: เปลี่ยน goal
+       ==========================*/
+    goalInput.addEventListener('input', (e)=>{
+      const v = +e.target.value; state.goal = v;
+      // เล่นเสียงสั้น
+      beep(220 + (v/2000)*200, 0.05);
+      // update color state
+      if(state.kcal < state.goal * 0.6){
+        document.querySelector('.kcal-value').classList.add('status-low');
+      } else {
+        document.querySelector('.kcal-value').classList.remove('status-low');
+      }
+    });
+
+    /* ==========================
+       Hologram popup
+       ==========================*/
+    const holoBackdrop = document.getElementById('holoBackdrop');
+    const closeHolo = document.getElementById('closeHolo');
+    document.querySelectorAll('.cube').forEach(node=>{
+      node.addEventListener('click', ()=>{
+        holoBackdrop.style.display = 'flex';
+        setTimeout(()=>{holoBackdrop.querySelector('.holo').classList.add('show');},10);
+        // เสียง hologram
+        beep(880,0.06);
+      });
+    });
+    closeHolo.addEventListener('click', ()=>{
+      holoBackdrop.querySelector('.holo').classList.remove('show');
+      setTimeout(()=>{holoBackdrop.style.display='none';},200);
+      beep(220,0.05);
+    });
+
+    /* ==========================
+       Beep function (WebAudio) — เสียงเล็กๆ เมื่อคลิก/สไลด์
+       ==========================*/
+    function beep(freq=440,duration=0.08){
+      try{
+        const ctx = new (window.AudioContext||window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = freq;
+        g.gain.value = 0.02; // เบามาก
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        o.stop(ctx.currentTime + duration);
+        o.onended = ()=>{ctx.close();}
+      }catch(e){/* หากบราวเซอร์บล็อกเสียง */}
+    }
+
+    /* ==========================
+       Initialize UI
+       ==========================*/
+    function init(){
+      updateNutri();
+      updateBMI();
+      drawSparkline();
+      bootKcal();
+      // เริ่มแอนิเมชันเติมแท่ง (ตัวอย่าง)
+      setTimeout(()=>{
+        fillProtein.style.height = Math.min(100, (state.protein/120*100)) + '%';
+        fillFat.style.height = Math.min(100, (state.fat/120*100)) + '%';
+        fillSodium.style.height = Math.min(100, (state.sodium/3500*100)) + '%';
+      }, 300);
+
+      // อัปเดตสถิติบางอย่างบนหน้าจอ
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('th-TH');
+
+      // ให้ segments ภายในหมุนหลายชั้น (visual tweak)
+      const segHolder = document.querySelector('.ring .segments');
+      for(let i=0;i<6;i++){
+        const dot = document.createElement('div');
+        dot.style.position='absolute'; dot.style.width='6px'; dot.style.height='6px'; dot.style.borderRadius='50%';
+        dot.style.left='50%'; dot.style.top='6%'; dot.style.transformOrigin='-50% 170px';
+        dot.style.opacity=0.85;
+        dot.style.animation = `spinLinear ${6 + i*2}s linear ${i%2?'-webkit-animation-direction:reverse':''} infinite`;
+        dot.style.background = (i%3===0)?'var(--accent-green)':(i%3===1)?'var(--accent-yellow)':'var(--accent-brown)';
+        segHolder.appendChild(dot);
+      }
+    }
+
+    // เรียกเริ่ม
+    init();
+
+    /* ==========================
+       สำหรับการทดลอง — ตัวอย่างวิธีแก้ไขค่าสถานะ (developer-friendly)
+       ==========================*/
+    // ตัวอย่าง: ให้ผู้ใช้คลิกเพื่อปรับค่าแคลอรี่แบบสุ่ม
+    document.querySelector('.kcal-hud').addEventListener('click', ()=>{
+      // update state (ตัวอย่าง)
+      state.kcal = Math.max(200, Math.round(Math.random()*2200));
+      // แสดง glitch ชั่วคราว
+      kcalNumEl.textContent = '';
+      kcalNumEl.dataset.text = '...'; kcalNumEl.classList.add('glitch');
+      setTimeout(()=>{
+        kcalNumEl.classList.remove('glitch'); kcalNumEl.textContent = state.kcal;
+        // สีเตือน
+        if(state.kcal < state.goal*0.6){
+          document.querySelector('.kcal-value').classList.add('status-low');
+          beep(180,0.08);
+        } else {
+          document.querySelector('.kcal-value').classList.remove('status-low');
+          beep(440,0.04);
+        }
+      },900);
+    });
+
+  </script>
+</body>
+</html>

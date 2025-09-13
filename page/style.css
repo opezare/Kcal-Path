@@ -91,8 +91,8 @@ body {
 .card {
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Shadow ที่ชัดเจนขึ้น */
-    padding: 35px; /* เพิ่ม padding */
+    box-shadow: none; /* เอาเงาออก */
+    padding: 35px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -139,9 +139,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px; /* เพิ่ม padding */
+    padding: 20px 40px;
     background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* เพิ่ม shadow ให้ Navbar */
+    box-shadow: none; /* เอาเงาออก */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -391,45 +391,72 @@ body {
 
 /* --- Tips Section --- */
 .tips-section {
-    background-color: var(--background-gray); /* พื้นหลังสีเทาอ่อน */
-    padding: 80px 20px;
+    padding: 80px 0;
     margin-bottom: 80px;
+    background: transparent; /* ไม่มีพื้นหลังเทา */
 }
 
 .tips-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    max-width: 1000px;
+    gap: 32px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .tip-card {
-    text-align: left;
+    width: 250px;
+    height: 400px;
+    max-width: 100%;
+    position: relative;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    box-shadow: none;
+    border: none;
+    padding: 0;
 }
 
-.tip-card img {
+.tip-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: 200px; /* กำหนดความสูงภาพ */
-    object-fit: cover;
-    border-radius: 8px; /* ขอบมนเล็กน้อย */
-    margin-bottom: 20px;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.65);
+    z-index: 0;
+    transition: filter 0.2s;
 }
 
-.tip-card h3 {
-    font-family: var(--font-heading);
-    font-size: 1.5em;
+.tip-card:hover .tip-bg {
+    filter: brightness(0.85);
+}
+
+.tip-content {
+    position: relative;
+    z-index: 1;
+    padding: 32px 24px 24px 24px;
+    width: 100%;
+    background: none;
+    border-radius: 0 0 18px 18px;
+    text-align: center; /* ตัวหนังสืออยู่ตรงกลาง */
+}
+
+.tip-content h3,
+.tip-content p {
+    color: #fff !important;
+}
+
+.tip-content .card-link {
+    color: #fff !important; /* อ่านเพิ่มเติมเป็นสีขาว */
     font-weight: 600;
-    color: var(--text-dark);
-    margin-bottom: 10px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
 }
-
-.tip-card p {
-    font-size: 1em;
-    color: var(--text-medium);
-    margin-bottom: 20px;
-}
-
 
 /* --- Food Log Page --- */
 .food-log-details-section {

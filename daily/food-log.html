@@ -14,7 +14,6 @@
 
     <header class="navbar">
         <div class="navbar-content">
-
             <div class="logo">
                 <span class="logo-text">KcalPath</span>
             </div>
@@ -22,7 +21,7 @@
                 <a href="../page/index.html" class="nav-item">หน้าแรก</a>
                 <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
                 <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
-                <a href="../projj/index.html" class="nav-item">ดัชนีมวลกาย</a>
+                <a href="../bmi/index.html" class="nav-item">คำนวณ</a>
             </nav>
             <div class="nav-actions">
                 <a href="account.html" class="btn btn-primary">
@@ -33,8 +32,8 @@
                     <span>My Account</span>
                 </a>
             </div>
-
-        </div> </header>
+        </div>
+    </header>
 
     <main class="main-content page-content">
         <h1 class="page-header-title">บันทึกอาหารประจำวัน</h1>
@@ -43,18 +42,27 @@
             <div class="card food-summary-card">
                 <h2 class="card-title">มื้ออาหารวันนี้</h2>
                 <div class="meal-list">
-                    <div class="meal-item">
-                        <h3>มื้อเช้า <span class="meal-kcal">(444 kcal)</span></h3>
-                        <p>ข้าวอกไก่ต้ม, ไข่ต้ม</p>
-                        <p class="meal-nutrients">โปรตีน 40g | ไขมัน 9.3g | คาร์บ 45g</p>
                     </div>
-                    <div class="meal-item">
-                        <h3>มื้อเที่ยง <span class="meal-kcal">(250 kcal)</span></h3>
-                        <p>แกงจืดเต้าหู้หมูสับ</p>
-                        <p class="meal-nutrients">โปรตีน 20g | ไขมัน 10g | คาร์บ 15g</p>
+                
+                <div class="food-search-container">
+                    <label for="food-search-input">ค้นหาอาหาร</label>
+                    <input type="text" id="food-search-input" placeholder="พิมพ์ชื่ออาหาร เช่น 'กะเพราไก่'..." autocomplete="off">
+                    <ul id="food-suggestions"></ul>
+                </div>
+                
+                <div class="food-search-container">
+                    <label>เพิ่มในมื้อ</label>
+                    <div class="meal-type-buttons" id="meal-type-buttons">
+                        <button type="button" class="meal-type-btn" data-value="มื้อเช้า">มื้อเช้า</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อเที่ยง">มื้อเที่ยง</button>
+                        <button type="button" class="meal-type-btn active" data-value="มื้อเย็น">มื้อเย็น</button>
+                        <button type="button" class="meal-type-btn" data-value="ของว่าง">ของว่าง</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อก่อนออกกำลังกาย">มื้อก่อนฯ</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อหลังออกกำลังกาย">มื้อหลังฯ</button>
                     </div>
                 </div>
-                <button class="btn btn-cta add-food-button">เพิ่มรายการอาหารใหม่</button>
+                <button class="btn btn-cta" id="add-food-btn" style="width: 100%; margin-top: 15px;">เพิ่มรายการ</button>
+
             </div>
 
             <div class="card nutrition-breakdown-card">
@@ -71,81 +79,40 @@
                     <tbody>
                         <tr>
                             <td>พลังงาน</td>
-                            <td id="log-total-kcal">694 kcal</td>
+                            <td id="log-total-kcal">0 kcal</td>
                             <td>1900 kcal</td>
-                            <td>1206 kcal</td>
+                            <td id="log-remaining-kcal">1900 kcal</td>
                         </tr>
                         <tr>
                             <td>โปรตีน</td>
-                            <td id="log-total-protein">60 g</td>
+                            <td id="log-total-protein">0 g</td>
                             <td>85 g</td>
-                            <td class="warning-text">25 g</td>
+                            <td id="log-remaining-protein" class="warning-text">85 g</td>
                         </tr>
                         <tr>
                             <td>ไขมัน</td>
-                            <td id="log-total-fat">19.3 g</td>
+                            <td id="log-total-fat">0 g</td>
                             <td>65 g</td>
-                            <td>45.7 g</td>
+                            <td id="log-remaining-fat">65 g</td>
                         </tr>
                         <tr>
                             <td>คาร์โบไฮเดรต</td>
-                            <td id="log-total-carb">60 g</td>
+                            <td id="log-total-carb">0 g</td>
                             <td>220 g</td>
-                            <td>160 g</td>
+                            <td id="log-remaining-carb">220 g</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="advice-box">
-                    <p class="advice-message" id="food-log-protein-advice">คุณยังต้องการโปรตีนอีก 25g เพื่อให้ถึงเป้าหมาย!</p>
-                    <p class="advice-message" id="food-log-fat-status">วันนี้ปริมาณไขมันของคุณยังอยู่ในเกณฑ์ดี</p>
+                    <p class="advice-message" id="food-log-protein-advice"></p>
+                    <p class="advice-message" id="food-log-fat-status"></p>
                 </div>
             </div>
         </section>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const meals = [
-                { name: 'ข้าวอกไก่ต้ม + ไข่ต้ม', kcal: 444, protein: 40, fat: 9.3, carb: 45, sodium: 1500 },
-                { name: 'แกงจืดเต้าหู้หมูสับ', kcal: 250, protein: 20, fat: 10, carb: 15, sodium: 300 }
-            ];
-
-            const goals = {
-                calories: 1900,
-                protein: 85,
-                fat: 65,
-                carb: 220,
-                sodium: 2300
-            };
-
-            let totalKcal = meals.reduce((sum, meal) => sum + meal.kcal, 0);
-            let totalProtein = meals.reduce((sum, meal) => sum + meal.protein, 0);
-            let totalFat = meals.reduce((sum, meal) => sum + meal.fat, 0);
-            let totalCarb = meals.reduce((sum, meal) => sum + meal.carb, 0);
-            
-            document.getElementById('log-total-kcal').textContent = `${totalKcal} kcal`;
-            document.getElementById('log-total-protein').textContent = `${totalProtein} g`;
-            document.getElementById('log-total-fat').textContent = `${totalFat} g`;
-            document.getElementById('log-total-carb').textContent = `${totalCarb} g`;
-
-            const remainingProtein = goals.protein - totalProtein;
-            if (remainingProtein > 0) {
-                document.getElementById('food-log-protein-advice').textContent = `คุณยังต้องการโปรตีนอีก ${remainingProtein}g เพื่อให้ถึงเป้าหมาย!`;
-            } else {
-                document.getElementById('food-log-protein-advice').textContent = 'คุณได้รับโปรตีนถึงเป้าหมายแล้ว!';
-                document.getElementById('food-log-protein-advice').style.color = 'var(--primary-green)';
-            }
-            
-            const fatRatio = (totalFat / goals.fat) * 100;
-            if (fatRatio >= 90) {
-                document.getElementById('food-log-fat-status').textContent = 'ระวัง! ไขมันใกล้ถึงขีดจำกัดแล้ว';
-                document.getElementById('food-log-fat-status').style.color = 'var(--brown)';
-            } else {
-                document.getElementById('food-log-fat-status').textContent = 'วันนี้ปริมาณไขมันของคุณยังอยู่ในเกณฑ์ดี';
-                document.getElementById('food-log-fat-status').style.color = 'var(--dark-green)';
-            }
-        });
-    </script>
+    <script src="database.js"></script>
+    <script src="food-log-hybrid.js"></script> 
     <script>
         const navbar = document.querySelector('.navbar');
         if (navbar) {

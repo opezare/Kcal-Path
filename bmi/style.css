@@ -1,0 +1,171 @@
+:root {
+    --primary-green: #4CAF50;
+    --dark-green: #388E3C;
+    --light-green: #81C784;
+    --yellow: #FFC107;
+    --brown: #D2691E;
+    --background-light: #FBF8F3; /* สีพื้นหลังหลักที่ดูอบอุ่น */
+    --background-gray: #f0f0f0; /* สีพื้นหลังรอง */
+    --text-dark: #333333; /* สีตัวอักษรเข้ม */
+    --text-medium: #616161; /* สีตัวอักษรกลาง */
+    --text-light: #9e9e9e; /* สีตัวอักษรอ่อน */
+    --border-color: #e0e0e0;
+
+    --font-heading: 'Nunito', serif; /* ฟอนต์ Serif สำหรับหัวข้อ */
+    --font-body: 'Sarabun', sans-serif; /* ฟอนต์ Sans-serif สำหรับเนื้อหา */
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* สำหรับ Firefox */
+    -ms-overflow-style: none;  /* สำหรับ Internet Explorer และ Edge (เก่า) */
+}
+
+/* --- ใช้ body จาก style copy.css --- */
+body {
+    font-family: var(--font-body);
+    background-color: var(--background-light); /* ใช้สีพื้นหลังใหม่ */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* padding: 20px; ถูกลบออกเพื่อให้ Navbar ชิดขอบ */
+}
+
+/* --- เพิ่มส่วนนี้เพื่อซ่อน scrollbar ใน Chrome, Safari, Edge --- */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* --- Global Elements --- */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 30px; /* กลมมน */
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-green);
+    color: #fff;
+    border: 2px solid var(--primary-green);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+    transform: translateY(-2px);
+}
+
+/* --- Navbar --- */
+/* นี่คือแถบหลักที่จะมีความกว้างเต็มจอ */
+.navbar {
+    width: 100%;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+}
+
+/* คอนเทนเนอร์ใหม่นี้จะเก็บเนื้อหาและจัดให้อยู่ในแนวเดียวกับหน้าเว็บ */
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    box-sizing: border-box;
+}
+
+/* คลาสสำหรับเงาตอนเลื่อนเว็บยังคงเหมือนเดิม */
+.navbar.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 32px; /* ขนาดใหญ่ขึ้น */
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 0.05em; /* เพิ่ม spacing */
+}
+
+.main-nav {
+    display: flex;
+    gap: 35px; /* เพิ่มช่องว่าง */
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-medium); /* สีตัวอักษรปกติ */
+    font-weight: 500;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-item::after {
+    background-color: var(--primary-green);
+    height: 2px;
+    bottom: -8px; /* ปรับตำแหน่ง */
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--primary-green);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+    .main-nav {
+        gap: 15px;
+    }
+    .nav-actions {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .logo-text {
+        font-size: 28px;
+    }
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* --- Style for Account Button with Icon --- */
+.nav-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* เพิ่มระยะห่างระหว่างไอคอนกับข้อความ */
+}
+
+.nav-actions .btn svg {
+    width: 20px;  /* กำหนดขนาดไอคอน */
+    height: 20px;
+    fill: currentColor; /* ทำให้ไอคอนเป็นสีเดียวกับสีตัวอักษร */
+}

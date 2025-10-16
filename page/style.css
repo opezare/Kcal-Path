@@ -28,6 +28,10 @@ body {
     overflow-x: hidden;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* --- Global Elements --- */
 .main-content {
     width: 100%;
@@ -245,6 +249,11 @@ body {
 .dashboard-section {
     padding: 0 20px;
     margin-bottom: 80px;
+}
+
+/* เพิ่มโค้ดส่วนนี้เข้าไปได้เลย */
+#dashboard-summary {
+    scroll-margin-top: 1000px;
 }
 
 .dashboard-grid-layout {
@@ -707,4 +716,17 @@ body {
     .tips-grid {
         gap: 20px;
     }
+}
+
+/* --- Style for Account Button with Icon --- */
+.nav-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* เพิ่มระยะห่างระหว่างไอคอนกับข้อความ */
+}
+
+.nav-actions .btn svg {
+    width: 20px;  /* กำหนดขนาดไอคอน */
+    height: 20px;
+    fill: currentColor; /* ทำให้ไอคอนเป็นสีเดียวกับสีตัวอักษร */
 }

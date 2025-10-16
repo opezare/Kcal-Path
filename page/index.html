@@ -13,25 +13,28 @@
 <body>
 
     <header class="navbar">
-        <div class="logo">
-            <span class="logo-text">KcalPath</span>
-        </div>
-        <nav class="main-nav">
-            <a href="index.html" class="nav-item active">หน้าแรก</a>
-            <a href="food-log.html" class="nav-item">บันทึกอาหาร</a>
-            <a href="stats.html" class="nav-item">สถิติ</a>
-            <a href="#" class="nav-item">ตั้งค่า</a>
-        </nav>
-        <div class="nav-actions">
-            <a href="account.html" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
-                    <path d="M0 0h24v24H0V0z" fill="none"/>
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-                <span>My Account</span>
-            </a>
-        </div>
-    </header>
+        <div class="navbar-content">
+
+            <div class="logo">
+                <span class="logo-text">KcalPath</span>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-item">หน้าแรก</a>
+                <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
+                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
+                <a href="../projj/index.html" class="nav-item">ดัชนีมวลกาย</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="account.html" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>My Account</span>
+                </a>
+            </div>
+
+        </div> </header>
 
     <main class="main-content">
         <section class="hero-section">
@@ -89,7 +92,7 @@
                         </div>
                     </div>
                     <p class="goal-text">จากเป้าหมาย <span id="daily-calorie-goal">1900</span> kcal</p>
-                    <a href="food-log.html" class="card-link">บันทึกอาหารเพิ่มเติม <span class="arrow">→</span></a>
+                    <a href="../daily/food-log.html" class="card-link">บันทึกอาหารเพิ่มเติม <span class="arrow">→</span></a>
                 </div>
 
                 <div class="card summary-card nutrient-summary">
@@ -123,7 +126,7 @@
                             <span class="nutrient-label">คาร์บ</span>
                         </div>
                     </div>
-                    <a href="food-log.html" class="card-link">ดูรายละเอียดสารอาหาร <span class="arrow">→</span></a>
+                    <a href="../daily/food-log.html" class="card-link">ดูรายละเอียดสารอาหาร <span class="arrow">→</span></a>
                 </div>
 
                 <div class="card summary-card health-stats-summary">
@@ -142,7 +145,7 @@
                             <div class="stat-label">BMR (kcal)</div>
                         </div>
                     </div>
-                    <a href="stats.html" class="card-link">ดูประวัติสถิติทั้งหมด <span class="arrow">→</span></a>
+                    <a href="../statistics/stats.html" class="card-link">ดูประวัติสถิติทั้งหมด <span class="arrow">→</span></a>
                 </div>
             </div>
         </section>
@@ -182,6 +185,18 @@
             document.querySelector('.nutrient-summary .nutrient-item:nth-child(2) .progress-circle').style.setProperty('--progress', (dailyData.fat / dailyData.fat_goal) * 100);
             document.querySelector('.nutrient-summary .nutrient-item:nth-child(3) .progress-circle').style.setProperty('--progress', (dailyData.carb / dailyData.carb_goal) * 100);
         });
+    </script>
+    <script>
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
     </script>
 </body>
 </html>

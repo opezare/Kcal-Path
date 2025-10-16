@@ -11,7 +11,7 @@
     --text-light: #9e9e9e; /* สีตัวอักษรอ่อน */
     --border-color: #e0e0e0;
 
-    --font-heading: 'Playfair Display', serif; /* ฟอนต์ Serif สำหรับหัวข้อ */
+    --font-heading: 'Nunito', serif; /* ฟอนต์ Serif สำหรับหัวข้อ */
     --font-body: 'Sarabun', sans-serif; /* ฟอนต์ Sans-serif สำหรับเนื้อหา */
 }
 
@@ -230,7 +230,6 @@ body {
     background-color: var(--background-gray);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .hero-image-right img {

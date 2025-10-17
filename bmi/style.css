@@ -42,7 +42,33 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+
 /* --- Global Elements --- */
+.main-content {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0;
+    margin-top: 0; /* ลบ margin-top */
+    
+    /* (เพิ่ม 2 บรรทัดนี้) เพื่อให้เนื้อหาลอยทับรูปภาพ */
+    position: relative;
+    z-index: 2;
+}
+
+.page-content {
+    padding: 40px 20px; /* เพิ่ม padding ให้หน้าย่อย */
+}
+
+.section-heading, .page-header-title {
+    font-family: var(--font-heading);
+    font-size: 3.5em; /* ขนาดใหญ่ขึ้น */
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 60px; /* เพิ่มช่องว่าง */
+    letter-spacing: -0.05em;
+}
+
 .btn {
     display: inline-block;
     padding: 12px 25px;
@@ -65,6 +91,67 @@ body::-webkit-scrollbar {
     background-color: var(--dark-green);
     border-color: var(--dark-green);
     transform: translateY(-2px);
+}
+
+.btn-cta {
+    background-color: var(--text-dark); /* ปุ่ม CTA สีเข้ม */
+    color: #fff;
+    border: 2px solid var(--text-dark);
+    padding: 15px 35px; /* ขนาดใหญ่กว่าปกติ */
+    font-size: 1.2em;
+}
+
+.btn-cta:hover {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+    transform: translateY(-2px);
+}
+
+/* --- ใน style.css (ส่วน Global Elements) --- */
+.card {
+    /* เปลี่ยน background-color เป็นโปร่งใส */
+    background-color: transparent; 
+    
+    border-radius: 12px;
+    box-shadow: none; /* เอาเงาออก */
+    padding: 35px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.8em;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.card-link {
+    font-family: var(--font-body);
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: auto;
+    display: flex; /* เพื่อจัดวางลูกศร */
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: color 0.3s ease;
+}
+
+.card-link:hover {
+    color: var(--dark-green);
+}
+
+.card-link .arrow {
+    transition: transform 0.3s ease;
+}
+
+.card-link:hover .arrow {
+    transform: translateX(5px);
 }
 
 /* --- Navbar --- */
@@ -132,6 +219,438 @@ body::-webkit-scrollbar {
     gap: 15px;
 }
 
+/* --- Hero Section --- */
+.hero-section {
+    background-color: var(--background-light); /* สีพื้นหลัง */
+    padding: 120px 40px; /* เพิ่ม padding ด้านบนและล่าง */
+    margin-bottom: 80px;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* แบ่งสัดส่วนคอลัมน์ */
+    gap: 60px;
+    align-items: center;
+    max-width: 1000px; /* กำหนด max-width สำหรับเนื้อหา hero */
+    margin: 0 auto;
+}
+
+.hero-text {
+    text-align: left;
+}
+
+.hero-subheading {
+    font-family: var(--font-body);
+    font-size: 1.2em;
+    color: var(--primary-green);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 4.8em; /* ขนาดใหญ่พิเศษ */
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+    margin-bottom: 30px;
+}
+
+.hero-image-right {
+    position: relative;
+    padding-bottom: 120%; /* เพื่อให้ภาพเป็นแนวตั้ง */
+    background-color: var(--background-gray);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hero-image-right img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Dashboard Summary Section --- */
+.dashboard-section {
+    padding: 0 20px;
+    margin-bottom: 80px;
+}
+
+/* เพิ่มโค้ดส่วนนี้เข้าไปได้เลย */
+#dashboard-summary {
+    scroll-margin-top: 1000px;
+}
+
+.dashboard-grid-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr; /* แบ่งสัดส่วนคล้ายตัวอย่าง */
+    gap: 30px;
+}
+
+.summary-card {
+    padding: 40px; /* เพิ่ม padding ให้ card */
+}
+
+.summary-card.calorie-summary {
+    grid-column: span 1; /* กลับมาเป็น 1 คอลัมน์ */
+}
+
+.goal-text {
+    font-size: 1.1em;
+    color: var(--text-medium);
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.nutrients-grid-display {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.nutrient-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nutrient-label {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--text-medium);
+    margin-top: 10px;
+}
+
+.health-stats-grid-display {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.stat-item .stat-value {
+    font-family: var(--font-heading);
+    font-size: 2.5em; /* ใหญ่ขึ้น */
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.stat-item .stat-label {
+    font-size: 0.95em;
+    color: var(--text-medium);
+}
+
+/* --- Progress Circles --- */
+.progress-circle {
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: conic-gradient(
+        var(--primary-green) 0%, 
+        var(--primary-green) calc(var(--progress, 0) * 1%), 
+        var(--border-color) calc(var(--progress, 0) * 1%), /* ใช้ border-color */
+        var(--border-color) 100%
+    );
+    box-shadow: inset 0 0 0 5px rgba(0,0,0,0.03); /* เพิ่มเงาภายในเล็กน้อย */
+}
+
+.progress-circle.large {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.progress-circle.small {
+    width: 90px;
+    height: 90px;
+}
+
+.progress-circle .circle-content {
+    background: #fff;
+    width: 85%; /* ขนาดเล็กลงเล็กน้อย */
+    height: 85%;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* เพิ่มเงาให้วงกลมด้านใน */
+}
+
+.progress-circle .value {
+    font-family: var(--font-heading);
+    font-size: 3.5em;
+    font-weight: 700;
+    color: var(--primary-green);
+    line-height: 1;
+}
+
+.progress-circle .unit {
+    font-size: 1em;
+    color: var(--text-medium);
+    margin-top: 5px;
+}
+
+.progress-circle.large .value { font-size: 3.5em; }
+.progress-circle.large .unit { font-size: 1.1em; }
+
+.progress-circle.small .value { font-size: 1.8em; }
+.progress-circle.small .unit { font-size: 0.8em; }
+
+/* กำหนดสีเฉพาะสำหรับวงกลมแสดงผลของสารอาหารอื่นๆ */
+.yellow-progress {
+    background: conic-gradient(
+        var(--yellow) 0%, 
+        var(--yellow) calc(var(--progress, 0) * 1%), 
+        var(--border-color) calc(var(--progress, 0) * 1%), 
+        var(--border-color) 100%
+    );
+}
+.yellow-progress .circle-content .value { color: var(--yellow); }
+
+.brown-progress {
+    background: conic-gradient(
+        var(--brown) 0%, 
+        var(--brown) calc(var(--progress, 0) * 1%), 
+        var(--border-color) calc(var(--progress, 0) * 1%), 
+        var(--border-color) 100%
+    );
+}
+.brown-progress .circle-content .value { color: var(--brown); }
+
+
+/* --- Tips Section --- */
+.tips-section {
+    padding: 80px 0;
+    margin-bottom: 130px; /* เพิ่มค่าตรงนี้ */
+    background: transparent;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.tip-card {
+    width: 250px;
+    height: 400px;
+    max-width: 100%;
+    position: relative;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+
+.tip-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.65);
+    z-index: 0;
+    transition: filter 0.2s;
+}
+
+.tip-card:hover .tip-bg {
+    filter: brightness(0.85);
+}
+
+.tip-content {
+    position: relative;
+    z-index: 1;
+    padding: 32px 24px 24px 24px;
+    width: 100%;
+    background: none;
+    border-radius: 0 0 18px 18px;
+    text-align: center; /* ตัวหนังสืออยู่ตรงกลาง */
+}
+
+.tip-content h3,
+.tip-content p {
+    color: #fff !important;
+}
+
+.tip-content .card-link {
+    color: #fff !important; /* อ่านเพิ่มเติมเป็นสีขาว */
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* --- Food Log Page --- */
+.food-log-details-section {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* แบ่งสัดส่วน */
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.food-summary-card, .nutrition-breakdown-card {
+    padding: 35px;
+    text-align: left;
+}
+
+.meal-list {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.meal-item {
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px 0;
+}
+.meal-item:last-child {
+    border-bottom: none;
+}
+.meal-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4em;
+    color: var(--text-dark);
+    margin: 0 0 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.meal-item .meal-kcal {
+    font-family: var(--font-body);
+    font-size: 0.9em;
+    font-weight: 400;
+    color: var(--text-medium);
+}
+.meal-item p {
+    margin: 0 0 5px 0;
+    color: var(--text-medium);
+}
+.meal-item .meal-nutrients {
+    font-size: 0.9em;
+    color: var(--text-light);
+}
+
+.nutrition-breakdown-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.nutrition-breakdown-card th, .nutrition-breakdown-card td {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+    font-family: var(--font-body);
+}
+.nutrition-breakdown-card th {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.nutrition-breakdown-card td {
+    color: var(--text-dark);
+}
+.nutrition-breakdown-card tr:last-child td {
+    border-bottom: none;
+}
+
+.advice-box {
+    background-color: var(--background-gray);
+    border-left: 5px solid var(--primary-green);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.advice-box p {
+    margin: 0;
+    font-weight: 500;
+    color: var(--text-medium);
+}
+.advice-box p.warning-text {
+    color: var(--brown);
+    font-weight: 600;
+}
+
+
+/* --- Stats Page --- */
+.stats-overview-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 60px auto;
+}
+
+.stat-summary-card {
+    padding: 30px;
+    text-align: left;
+}
+
+.stat-summary-card h3 {
+    font-family: var(--font-body);
+    font-size: 1.3em;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.stat-summary-card .summary-value {
+    font-family: var(--font-heading);
+    font-size: 2.8em;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.stat-summary-card .summary-trend {
+    font-size: 0.9em;
+    color: var(--text-medium);
+}
+
+.stats-charts-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.chart-card {
+    padding: 35px;
+}
+
+.chart-card h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8em;
+    margin-bottom: 30px;
+}
+
+.chart-card canvas {
+    max-height: 350px;
+    width: 100% !important;
+    height: auto !important;
+}
+
 /* --- Responsive Adjustments --- */
 @media (max-width: 900px) {
     .navbar {
@@ -145,6 +664,50 @@ body::-webkit-scrollbar {
     .nav-actions {
         margin-top: 10px;
     }
+    .hero-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+    .hero-text {
+        text-align: center;
+    }
+    .hero-title {
+        font-size: 3.5em;
+    }
+    .hero-subheading {
+        font-size: 1em;
+    }
+    .hero-image-right {
+        padding-bottom: 75%; /* ปรับสัดส่วนภาพสำหรับมือถือ */
+    }
+    .dashboard-grid-layout, .food-log-details-section, .stats-charts-section {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+    .dashboard-section, .tips-section, .stats-overview-section, .stats-charts-section {
+        padding: 40px 15px;
+    }
+    .section-heading, .page-header-title {
+        font-size: 2.5em;
+        margin-bottom: 40px;
+    }
+    .calorie-summary {
+        grid-column: span 1;
+    }
+    .progress-circle.large {
+        width: 150px;
+        height: 150px;
+    }
+    .progress-circle.large .value {
+        font-size: 3em;
+    }
+    .card-title {
+        font-size: 1.5em;
+    }
+    .nutrients-grid-display, .health-stats-grid-display {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -154,6 +717,35 @@ body::-webkit-scrollbar {
     .main-nav {
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .hero-title {
+        font-size: 2.8em;
+    }
+    .hero-subtitle {
+        font-size: 1.1em;
+    }
+    .btn-cta {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+    .section-heading, .page-header-title {
+        font-size: 2em;
+    }
+    .progress-circle.large {
+        width: 130px;
+        height: 130px;
+    }
+    .progress-circle.large .value {
+        font-size: 2.5em;
+    }
+    .card-title {
+        font-size: 1.3em;
+    }
+    .stat-summary-card .summary-value {
+        font-size: 2.2em;
+    }
+    .tips-grid {
+        gap: 20px;
     }
 }
 
@@ -168,4 +760,336 @@ body::-webkit-scrollbar {
     width: 20px;  /* กำหนดขนาดไอคอน */
     height: 20px;
     fill: currentColor; /* ทำให้ไอคอนเป็นสีเดียวกับสีตัวอักษร */
+}
+
+/* --- (แก้ไข) Styles for Food Search Box (Minimal) --- */
+.food-search-container {
+    width: 100%;
+    margin-bottom: 25px;
+    position: relative; /* สำหรับกล่อง suggestions */
+}
+.food-search-container label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+
+/* (แก้ไข) ทำให้เป็นแบบขีดเส้นใต้ มินิมอล */
+.food-search-container input {
+    width: 100%;
+    padding: 12px 5px; /* ลด padding ด้านข้าง */
+    border-radius: 0; /* ไม่มีมุมมน */
+    border: none; /* ลบขอบทั้งหมด */
+    border-bottom: 2px solid var(--border-color); /* เพิ่มขีดเส้นใต้ */
+    font-family: var(--font-body);
+    font-size: 1em;
+    box-sizing: border-box; 
+    background-color: transparent; /* พื้นหลังโปร่งใส */
+    transition: border-color 0.3s ease;
+}
+
+/* (แก้ไข) ทำให้ focus เปลี่ยนสีเส้นใต้ */
+.food-search-container input:focus {
+    outline: none;
+    border-bottom-color: var(--primary-green); /* เปลี่ยนสีเส้นใต้เมื่อ focus */
+    box-shadow: none; /* ลบเงา */
+}
+
+/* --- (เพิ่มใหม่) Styles for Suggestions --- */
+#food-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none; /* เริ่มต้นด้วยการซ่อน */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+#food-suggestions li {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--background-gray);
+    cursor: pointer;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+}
+#food-suggestions li:last-child {
+    border-bottom: none;
+}
+#food-suggestions li:hover {
+    background-color: var(--background-gray);
+    color: var(--primary-green);
+}
+#food-suggestions .suggestion-kcal {
+    color: var(--text-medium);
+    font-size: 0.9em;
+}
+
+.food-summary-card, .nutrition-breakdown-card {
+    padding: 35px;
+    text-align: left;
+}
+
+/* --- (เพิ่ม/แก้ไข) ทำให้การ์ดขวาลอยตาม --- */
+.nutrition-breakdown-card {
+    position: sticky;
+    top: 90px; /* ระยะห่างจากขอบบน (เผื่อ Navbar) */
+    align-self: start; /* ป้องกันไม่ให้การ์ดยืดตามการ์ดซ้าย */
+}
+
+/* --- (แก้ไข) Styles for Meal Type Buttons (Grid Layout + New Hover) --- */
+.meal-type-buttons {
+    display: grid; /* (แก้ไข) เปลี่ยนเป็น Grid */
+    grid-template-columns: repeat(3, 1fr); /* (แก้ไข) 3 คอลัมน์เท่ากัน */
+    gap: 8px; /* ระยะห่างระหว่างปุ่ม */
+    /* ลบ flex-wrap, overflow, padding-bottom */
+}
+
+/* ปุ่มสถานะปกติ - สีเทาอ่อน ไร้ขอบ */
+.meal-type-btn {
+    font-family: var(--font-body);
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 8px 10px; /* ปรับ padding เล็กน้อย */
+    border-radius: 20px; 
+    border: 2px solid transparent; /* ไร้ขอบ */
+    background-color: var(--background-gray);
+    color: var(--text-medium);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%; /* (เพิ่ม) ให้เต็มความกว้าง grid cell */
+    box-sizing: border-box; /* (เพิ่ม) */
+    text-align: center; /* (เพิ่ม) */
+}
+
+/* (แก้ไข) ปุ่มสถานะ Hover - เปลี่ยนแค่ขอบและตัวอักษร */
+.meal-type-btn:hover {
+    border-color: var(--primary-green); /* (แก้ไข) */
+    background-color: var(--background-gray); /* (แก้ไข) สีเดิม */
+    color: var(--primary-green); /* (แก้ไข) */
+}
+
+/* ปุ่มที่ถูกเลือก (active) - สีเขียวเข้ม ตัวอักษรขาว */
+.meal-type-btn.active {
+    background-color: var(--primary-green); 
+    border-color: transparent; 
+    color: #fff; 
+    font-weight: 600;
+}
+
+/* (เพิ่ม) สไตล์ hover ของปุ่ม active ไม่ให้เพี้ยน */
+.meal-type-btn.active:hover {
+    background-color: var(--dark-green); /* เข้มขึ้นนิดหน่อย */
+    border-color: transparent;
+    color: #fff;
+}
+
+/* ปุ่มสถานะ Focus - "ไม่มี" ขอบดำ/เงา */
+.meal-type-btn:focus {
+    outline: none; 
+    box-shadow: none; 
+    border-color: transparent; 
+}
+
+/* --- Styles for modern SELECT dropdown (คล้าย Foodie Tracker) --- */
+.modern-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 1.1em;
+    color: var(--text-dark);
+    background-color: #fff;
+    appearance: none; /* ซ่อนลูกศร default */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%239e9e9e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3e%3cpolyline points="6 9 12 15 18 9"%3e%3c/polyline%3e%3c/svg%3e'); /* ไอคอนลูกศร custom */
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modern-select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* --- ปรับปรุง meal-type-buttons สำหรับ Goal (ถ้ามี 3 ปุ่ม) --- */
+/* goal-buttons จะจัด 3 ปุ่มให้เต็มความกว้าง */
+.meal-type-buttons.goal-buttons {
+    grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์สำหรับ 3 ปุ่ม */
+    gap: 10px; /* ลด gap เล็กน้อย */
+}
+
+/* สำหรับสีข้อความเตือน/คำแนะนำ */
+.warning-text {
+    color: var(--orange); /* หรือสีแดง #e74c3c ถ้าต้องการให้เป็นสีแดงจริงๆ */
+    font-weight: 600;
+}
+
+/* --- (ใหม่) Custom Select Dropdown Styles (Activity Level) --- */
+
+/* ตัวครอบทั้งหมด */
+.custom-select-container {
+    position: relative; 
+}
+
+/* 1. กล่องแสดงผล (ทำหน้าตาเหมือน input ขีดเส้นใต้) */
+.select-display {
+    width: 100%;
+    /* *************************************** */
+    /* ** ปรับ Padding และ Font-size ใหม่ ** */
+    padding: 12px 0; /* เพิ่ม Padding ด้านบน/ล่าง */
+    font-size: 1.0em; /* ลดขนาดตัวอักษรลงให้เท่ากับช่อง Input ปกติ */
+    /* *************************************** */
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    background: none;
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.3s;
+}
+
+/* ตอนคลิก/focus ให้เส้นใต้เปลี่ยนสี */
+.select-display:focus,
+.custom-select-container.open .select-display {
+    outline: none;
+    border-bottom-color: var(--primary-green);
+}
+
+/* ลูกศรชี้ลง */
+.select-display svg {
+    stroke: var(--text-light); /* สีลูกศรจางๆ */
+    transition: transform 0.3s ease;
+    width: 20px;
+    height: 20px;
+}
+
+/* 2. กล่องรายการตัวเลือก (อัปเกรดแล้ว) */
+.select-options {
+    display: none; 
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border-color, #eee);
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    
+    /* --- (แก้ไข) เพิ่ม 3 บรรทัดนี้ --- */
+    z-index: 900;       /* 1. แก้ปัญหา: กำหนดให้ลอยทับการ์ดขวา (แต่ยังน้อยกว่า Navbar ที่ 1000) */
+    opacity: 0;         /* 2. ทำให้ดูดี: เริ่มต้นแบบโปร่งใส */
+    transition: opacity 0.2s ease, transform 0.2s ease; /* 3. ทำให้ดูดี: เพิ่มอนิเมชัน */
+
+    list-style: none; 
+    padding: 8px; 
+    margin-top: 4px; 
+    /* (ลบ max-height และ overflow-y ออกจากรอบที่แล้ว) */
+}
+
+/* (สไตล์ LI และอื่นๆ เหมือนเดิม) */
+.select-options li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--background-gray, #f1f1f1); 
+}
+.select-options li:last-child {
+    border-bottom: none;
+}
+/* --- (สไตล์ LI และอื่นๆ เหมือนเดิม) --- */
+.select-options li:hover {
+    background-color: var(--background-gray, #f5f5f5);
+}
+
+/* **************************************************** */
+/* ** เพิ่มส่วนนี้เพื่อเปลี่ยนสีตัวอักษรเป็นสีเขียวเมื่อ Hover ** */
+.select-options li:hover .option-primary {
+    color: var(--primary-green);
+}
+.select-options li:hover .option-secondary {
+    color: var(--primary-green);
+}
+/* **************************************************** */
+.option-primary {
+    font-family: var(--font-body);
+    /* *************************************** */
+    /* ** ปรับ Font-size ใหม่ ** */
+    font-size: 1.0em; /* ลดขนาดตัวอักษรลง */
+    /* *************************************** */
+    font-weight: 500;
+    color: var(--text-dark, #333);
+    margin-right: 15px; 
+}
+.option-secondary {
+    /* (โค้ดเดิม - ไม่ต้องแก้ไข) */
+    font-family: var(--font-body);
+    font-size: 1.0em;
+    color: var(--text-medium, #777);
+    white-space: nowrap;
+}
+
+/* --- (อัปเกรด) ควบคุมการ เปิด/ปิด dropdown --- */
+.custom-select-container.open .select-options {
+    display: block; /* สั่งให้แสดงรายการ */
+    opacity: 1;     /* (เพิ่ม) ทำให้มองเห็น */
+}
+.custom-select-container.open .select-display svg {
+    transform: rotate(180deg);
+}
+
+/* --- (อัปเกรด) ปรับปรุงอนิเมชันเปิด/ปิด Dropdown --- */
+.select-options {
+    /* ... (โค้ดเดิมของคุณ) ... */
+    opacity: 0;
+    transform: scaleY(0.95); /* เริ่มแบบหดเล็กน้อย */
+    transform-origin: top center; /* จุดหมุนอยู่ด้านบน (สำหรับเปิดลงล่าง) */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.custom-select-container.open .select-options {
+    opacity: 1;
+    transform: scaleY(1); /* ขยายเต็ม */
+}
+
+/* --- (ใหม่) สไตล์สำหรับ Dropdown ที่เปิดขึ้นบน --- */
+.custom-select-container.open-up .select-options {
+    bottom: 100%; /* ย้ายไปอยู่เหนือกล่อง display */
+    top: auto;
+    margin-top: 0;
+    margin-bottom: 4px; /* เว้นระยะห่างด้านล่างแทน */
+    
+    transform-origin: bottom center; /* (สำคัญ) เปลี่ยนจุดหมุนมาอยู่ด้านล่าง */
+}
+
+/* --- (เพิ่มใหม่) สไตล์สำหรับรูปภาพพื้นหลัง --- */
+#body-model-image {
+    position: fixed;      /* ตรึงไว้กับหน้าจอ */
+    top: 120px;            /* (แก้ไข) ขยับลงมา 72px (ความสูง Navbar) */
+    right: 0;
+    /* bottom: 0; (ลบออก) */
+    height: calc(100vh - 72px); /* (แก้ไข) ความสูงให้พอดีกับส่วนที่เหลือ */
+    width: auto;          /* กว้างอัตโนมัติ */
+    object-fit: contain;  /* รักษาสัดส่วนภาพ */
+    z-index: 1;           /* อยู่หลัง main-content (2) แต่หน้า body (0) */
+    pointer-events: none; /* ทำให้คลิกทะลุได้ */ 
+    opacity: 0.9;      
 }

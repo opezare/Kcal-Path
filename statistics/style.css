@@ -103,8 +103,11 @@ body::-webkit-scrollbar {
     transform: translateY(-2px);
 }
 
+/* --- ใน style.css (ส่วน Global Elements) --- */
 .card {
-    background-color: #fff;
+    /* เปลี่ยน background-color เป็นโปร่งใส */
+    background-color: transparent; 
+    
     border-radius: 12px;
     box-shadow: none; /* เอาเงาออก */
     padding: 35px;

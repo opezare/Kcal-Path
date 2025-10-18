@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KcalPath - บันทึกอาหาร</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="../login/auth-guard.js" defer></script>
+    
+    <link rel="stylesheet" href="food-log.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -18,13 +20,13 @@
                 <span class="logo-text">KcalPath</span>
             </div>
             <nav class="main-nav">
-                <a href="../page/index.html" class="nav-item">หน้าแรก</a>
-                <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
-                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
-                <a href="../bmi/index.html" class="nav-item">คำนวณ</a>
+                <a href="../page/page.html" class="nav-item">หน้าแรก</a>
+                <a href="../daily/food-log.html" class="nav-item active">บันทึกอาหาร</a>
+                <a href="../statistics/stats.html" class="nav-item">ประวัติ</a>
+                <a href="../bmi/calculator.html" class="nav-item">คำนวณ</a>
             </nav>
             <div class="nav-actions">
-                <a href="account.html" class="btn btn-primary">
+                <a href="../login/login.html" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
                         <path d="M0 0h24v24H0V0z" fill="none"/>
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -61,7 +63,10 @@
                         <button type="button" class="meal-type-btn" data-value="มื้อหลังออกกำลังกาย">มื้อหลังฯ</button>
                     </div>
                 </div>
-                <button class="btn btn-cta" id="add-food-btn" style="width: 100%; margin-top: 15px;">เพิ่มรายการ</button>
+                <div class="button-group-container">
+                    <button class="btn btn-cta" id="add-food-btn">เพิ่มรายการ</button>
+                    <button type="button" class="btn btn-secondary" id="reset-log-btn">รีเซตอาหารวันนี้</button>
+                </div>
 
             </div>
 
@@ -80,26 +85,22 @@
                         <tr>
                             <td>พลังงาน</td>
                             <td id="log-total-kcal">0 kcal</td>
-                            <td>1900 kcal</td>
-                            <td id="log-remaining-kcal">1900 kcal</td>
+                            <td>0 kcal</td> <td id="log-remaining-kcal">0 kcal</td>
                         </tr>
                         <tr>
                             <td>โปรตีน</td>
                             <td id="log-total-protein">0 g</td>
-                            <td>85 g</td>
-                            <td id="log-remaining-protein" class="warning-text">85 g</td>
+                            <td>0 g</td> <td id="log-remaining-protein" class="warning-text">0 g</td>
                         </tr>
                         <tr>
                             <td>ไขมัน</td>
                             <td id="log-total-fat">0 g</td>
-                            <td>65 g</td>
-                            <td id="log-remaining-fat">65 g</td>
+                            <td>0 g</td> <td id="log-remaining-fat">0 g</td>
                         </tr>
                         <tr>
                             <td>คาร์โบไฮเดรต</td>
                             <td id="log-total-carb">0 g</td>
-                            <td>220 g</td>
-                            <td id="log-remaining-carb">220 g</td>
+                            <td>0 g</td> <td id="log-remaining-carb">0 g</td>
                         </tr>
                     </tbody>
                 </table>

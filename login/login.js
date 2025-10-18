@@ -1,33 +1,33 @@
-
 /* ==========================================================================
    Kcal Path — Frontend Logic (Vanilla JS, no frameworks)
    Handles:
    - Login form (demo only)
    - Multi-step wizard: gender, age/weight/height, activity, goal, confirm
-   - Client-side validation & state persistence via sessionStorage
-   - Simple navigation helpers
+   - (แก้ไข) ใช้ localStorage เพื่อบันทึกข้อมูลข้าม session
+   - (แก้ไข) คำนวณและบันทึกข้อมูลหลักของผู้ใช้
    ========================================================================== */
 
 /** Utilities **/
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-const STORAGE_KEY = "kcalPathState";
+// (แก้ไข) เปลี่ยน key สำหรับ state ชั่วคราวของ wizard
+const WIZARD_STATE_KEY = "kcalPathWizardState"; 
 
 /** Simple router-ish helpers (separate pages) **/
 function go(href){ window.location.href = href; }
 
-/** Persist wizard state across pages **/
+/** (แก้ไข) Persist wizard state (ใช้ sessionStorage สำหรับ state ชั่วคราว) **/
 function loadState(){
-  try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || {}; }
+  try { return JSON.parse(sessionStorage.getItem(WIZARD_STATE_KEY)) || {}; }
   catch(e){ return {}; }
 }
 function saveState(patch){
   const next = { ...loadState(), ...patch };
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  sessionStorage.setItem(WIZARD_STATE_KEY, JSON.stringify(next));
   return next;
 }
-function clearState(){ sessionStorage.removeItem(STORAGE_KEY); }
+function clearState(){ sessionStorage.removeItem(WIZARD_STATE_KEY); }
 
 /** Login page logic **/
 function initLogin(){
@@ -47,7 +47,8 @@ function initLogin(){
       error.textContent = "กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน";
       return;
     }
-    // pretend success then go to wizard
+    // ล้าง state เก่า (ถ้ามี) และไปหน้า wizard
+    clearState();
     go("wizard.html");
   });
 
@@ -98,8 +99,12 @@ function initWizard(){
   if(confirmBtn){
     confirmBtn.addEventListener("click", () => {
       if(validate(current)){
+        
+        // --- (เพิ่มใหม่) คำนวณและบันทึกข้อมูลหลัก ---
+        calculateAndSaveMasterData();
+        
         alert("ยืนยันสำเร็จ! \nระบบจะบันทึกข้อมูลของคุณไว้");
-        go("../page/index.html");
+        go("../page/page.html"); // (แก้ไข) ไปหน้า page.html
       }
     });
   }
@@ -110,6 +115,82 @@ function initWizard(){
   // Prime first view
   show(0);
   updateConfirmPreview();
+
+  /** (เพิ่ม) ฟังก์ชันคำนวณและบันทึกข้อมูลหลัก **/
+  function calculateAndSaveMasterData() {
+        const state = loadState(); // โหลดข้อมูลล่าสุด (ที่เพิ่ง validate ผ่าน)
+        
+        const weight = parseFloat(state.weight);
+        const height = parseFloat(state.height);
+        const age = parseFloat(state.age);
+        const gender = state.gender;
+        
+        // (1) หาค่า Activity Multiplier
+        const activityMultipliers = {
+            "none": 1.2,
+            "light": 1.375,
+            "moderate": 1.55,
+            "active": 1.725,
+            "athlete": 1.9
+        };
+        const activityValue = activityMultipliers[state.activity] || 1.2;
+
+        // (2) คำนวณ BMI
+        const h_m = height / 100;
+        const bmi = weight / (h_m * h_m);
+        let bmiStatus = '';
+        if (bmi < 18.5) bmiStatus = 'น้ำหนักน้อย/ผอม';
+        else if (bmi < 23) bmiStatus = 'สมส่วน';
+        else if (bmi < 25) bmiStatus = 'น้ำหนักเกิน';
+        else if (bmi < 30) bmiStatus = 'อ้วนระดับ 1';
+        else bmiStatus = 'อ้วนระดับ 2 (อันตราย)';
+
+        // (3) คำนวณ BMR (Mifflin-St Jeor)
+        let bmr = (10 * weight) + (6.25 * height) - (5 * age) + (gender === 'male' ? 5 : -161);
+        bmr = Math.round(bmr);
+        
+        // (4) คำนวณ TDEE
+        let tdee = Math.round(bmr * activityValue);
+        
+        // (5) คำนวณ Goal Calories
+        let goalCalories = tdee;
+        if (state.goal === 'lose') goalCalories = Math.round(tdee - 500); 
+        else if (state.goal === 'gain') goalCalories = Math.round(tdee + 500); 
+
+        // (6) คำนวณ Macro Goals (40% Carb, 30% Protein, 30% Fat)
+        const goalCarb = Math.round((goalCalories * 0.40) / 4);
+        const goalProtein = Math.round((goalCalories * 0.30) / 4);
+        const goalFat = Math.round((goalCalories * 0.30) / 9);
+
+        // (7) บันทึกข้อมูลทั้งหมดลง localStorage ให้ไฟล์อื่นใช้
+        const inputs = {
+            gender: gender,
+            age: age,
+            weight: weight,
+            height: height,
+            activity: activityValue, // บันทึกเป็นค่าตัวเลข
+            goal: state.goal
+        };
+        // บันทึกถาวรลง localStorage
+        localStorage.setItem('kcalPathInputs', JSON.stringify(inputs));
+        
+        const metrics = {
+            bmr: bmr,
+            tdee: tdee,
+            goalCalories: goalCalories,
+            goalCarb: goalCarb,
+            goalProtein: goalProtein,
+            goalFat: goalFat
+        };
+        localStorage.setItem('kcalPathMetrics', JSON.stringify(metrics));
+
+        localStorage.setItem('kcalPathBmi', bmi.toFixed(1));
+        localStorage.setItem('kcalPathBmiCategory', bmiStatus);
+        
+        // (8) ล้าง state ชั่วคราวของ wizard
+        clearState();
+  }
+
 
   /** Validation per step **/
   function validate(stepIdx){
@@ -144,7 +225,6 @@ function initWizard(){
     }
     // step 4: confirm
     if(stepIdx === 4){
-      // nothing extra, but ensure state exists
       const s = loadState();
       if(!s.gender || !s.age || !s.weight || !s.height || !s.activity || !s.goal){
         return error("#confirmError", "ข้อมูลไม่ครบถ้วน");

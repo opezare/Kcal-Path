@@ -37,79 +37,11 @@ const resultBmrEl = document.getElementById('result-bmr');
 const resultTdeeEl = document.getElementById('result-tdee');
 const resultGoalEl = document.getElementById('result-goal');
 const resultAdviceEl = document.getElementById('result-advice');
-const bodyModelImage = document.getElementById('body-model-image'); // ประกาศตัวแปรนี้เพิ่ม
+const bodyModelImage = document.getElementById('body-model-image');
 
-// --- Utility Functions ---
-
-function calculateMetrics(weight, height, age, gender, activity, goalType) {
-    const h_m = height / 100;
-    const bmi = weight / (h_m * h_m);
-    // BMR (Mifflin-St Jeor)
-    let bmr = (10 * weight) + (6.25 * height) - (5 * age) + (gender === 'male' ? 5 : -161);
-    bmr = Math.round(bmr);
-    let tdee = Math.round(bmr * activity);
-    let goalCalories = tdee;
-    
-    // คำนวณแคลอรีตามเป้าหมาย (ลด/เพิ่ม 500 kcal เพื่อให้สอดคล้องกับ Logic ของโค้ดที่ถูกลบไป)
-    if (goalType === 'lose') goalCalories = Math.round(tdee - 500); 
-    else if (goalType === 'gain') goalCalories = Math.round(tdee + 500); 
-    
-    return { bmi, bmr, tdee, goalCalories };
-}
-
-function showResults(bmi, bmr, tdee, goalCalories) {
-    let bmiStatus = '';
-    let categoryClass = 'advice-message'; 
-    
-    // เกณฑ์ BMI สำหรับคนเอเชีย (อิงตามโค้ดที่ถูกลบไป)
-    let imageSuffix = 'default.png'; 
-    
-    if (bmi < 18.5) {
-        bmiStatus = 'น้ำหนักน้อย/ผอม';
-        categoryClass += ' warning-text'; 
-        imageSuffix = 'underweight.png';
-    } else if (bmi < 23) { 
-        bmiStatus = 'สมส่วน';
-        imageSuffix = 'healthy.png';
-    } else if (bmi < 25) {
-        bmiStatus = 'น้ำหนักเกิน';
-        categoryClass += ' warning-text';
-        imageSuffix = 'overweight.png'; // อ้างอิงจากโค้ดที่ถูกลบ
-    } else if (bmi < 30) {
-        bmiStatus = 'อ้วนระดับ 1';
-        categoryClass += ' warning-text';
-        imageSuffix = 'obese1.png'; // อ้างอิงจากโค้ดที่ถูกลบ
-    } else {
-        bmiStatus = 'อ้วนระดับ 2 (อันตราย)';
-        categoryClass += ' warning-text';
-        imageSuffix = 'obese2.png'; // อ้างอิงจากโค้ดที่ถูกลบ
-    }
-
-    resultBmiEl.textContent = `${bmi.toFixed(1)}`;
-    resultBmiCategoryEl.textContent = bmiStatus;
-    resultBmrEl.textContent = `${bmr} kcal`;
-    resultTdeeEl.textContent = `${tdee} kcal`;
-    resultGoalEl.textContent = `${goalCalories} kcal`;
-    resultAdviceEl.textContent = `แคลอรีสำหรับเป้าหมายของคุณ: ${goalCalories} kcal/วัน`;
-    resultAdviceEl.className = categoryClass; 
-
-    // --- ส่วนที่แก้ไข: การเปลี่ยนรูปภาพ ---
-    // กำหนด Path Prefix ตามเพศ (ลบ './' เพื่อแก้ไขปัญหา Path ผิดพลาด)
-    const pathPrefix = (selectedGender === 'male') ? 'assets/images/male_' : 'assets/images/female_';
-    
-    // ใช้ Path Prefix และ Suffix ที่กำหนดตาม BMI
-    if (imageSuffix !== 'default.png') {
-        bodyModelImage.src = pathPrefix + imageSuffix; 
-    } else {
-        // ใช้รูป default ถ้าหาไม่เจอ
-        bodyModelImage.src = 'assets/images/default.png';
-    }
-    
-    // Save to LocalStorage
-    localStorage.setItem('kcalPathBmi', bmi.toFixed(1));
-    localStorage.setItem('kcalPathBmiCategory', bmiStatus);
-    localStorage.setItem('kcalPathMetrics', JSON.stringify({ bmr, tdee, goalCalories }));
-}
+// --- (ลบ) Utility Functions (ย้ายตรรกะไปรวมใน submit) ---
+// (ลบ function calculateMetrics)
+// (ลบ function showResults)
 
 // --- Event Listeners ---
 
@@ -136,16 +68,12 @@ activityDisplay.addEventListener('click', () => {
     const rect = activityDisplay.getBoundingClientRect(); 
     const viewportHeight = window.innerHeight; 
 
-    // เช็คว่าปุ่มอยู่ต่ำกว่า 60% ของหน้าจอหรือไม่
     if (rect.bottom > (viewportHeight * 0.6)) {
-        // ถ้าอยู่ล่าง ให้เปิดขึ้นบน
         activityContainer.classList.add('open-up');
     } else {
-        // ถ้าอยู่บน ให้เปิดลงล่าง
         activityContainer.classList.remove('open-up');
     }
     
-    // สั่งเปิด/ปิด
     activityContainer.classList.toggle('open');
 });
 
@@ -170,7 +98,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Form Submission (Calculate Button)
+// (แก้ไข) Form Submission (รวมตรรกะทั้งหมดและบันทึกข้อมูลหลัก)
 calculatorForm.addEventListener('submit', function(event) {
     event.preventDefault(); 
 
@@ -185,9 +113,69 @@ calculatorForm.addEventListener('submit', function(event) {
         return;
     }
 
-    const metrics = calculateMetrics(weight, height, age, selectedGender, activity, selectedGoal);
-    showResults(metrics.bmi, metrics.bmr, metrics.tdee, metrics.goalCalories);
+    // --- (แก้ไข) คัดลอกตรรกะจาก login.js มาวาง ---
+    
+    // (1) คำนวณ BMI
+    const h_m = height / 100;
+    const bmi = weight / (h_m * h_m);
+    let bmiStatus = '';
+    let categoryClass = 'advice-message'; 
+    let imageSuffix = 'default.png'; 
+    
+    if (bmi < 18.5) {
+        bmiStatus = 'น้ำหนักน้อย/ผอม';
+        categoryClass += ' warning-text'; 
+        imageSuffix = 'underweight.png';
+    } else if (bmi < 23) { 
+        bmiStatus = 'สมส่วน';
+        imageSuffix = 'healthy.png';
+    } else if (bmi < 25) {
+        bmiStatus = 'น้ำหนักเกิน';
+        categoryClass += ' warning-text';
+        imageSuffix = 'overweight.png';
+    } else if (bmi < 30) {
+        bmiStatus = 'อ้วนระดับ 1';
+        categoryClass += ' warning-text';
+        imageSuffix = 'obese1.png';
+    } else {
+        bmiStatus = 'อ้วนระดับ 2 (อันตราย)';
+        categoryClass += ' warning-text';
+        imageSuffix = 'obese2.png';
+    }
 
+    // (2) คำนวณ BMR (Mifflin-St Jeor)
+    let bmr = (10 * weight) + (6.25 * height) - (5 * age) + (selectedGender === 'male' ? 5 : -161);
+    bmr = Math.round(bmr);
+    
+    // (3) คำนวณ TDEE
+    let tdee = Math.round(bmr * activity);
+    
+    // (4) คำนวณ Goal Calories
+    let goalCalories = tdee;
+    if (selectedGoal === 'lose') goalCalories = Math.round(tdee - 500); 
+    else if (selectedGoal === 'gain') goalCalories = Math.round(tdee + 500); 
+
+    // (5) คำนวณ Macro Goals (40/30/30)
+    const goalCarb = Math.round((goalCalories * 0.40) / 4);
+    const goalProtein = Math.round((goalCalories * 0.30) / 4);
+    const goalFat = Math.round((goalCalories * 0.30) / 9);
+
+    // (6) แสดงผลลัพธ์ (ย้ายมาจาก showResults)
+    resultBmiEl.textContent = `${bmi.toFixed(1)}`;
+    resultBmiCategoryEl.textContent = bmiStatus;
+    resultBmrEl.textContent = `${bmr} kcal`;
+    resultTdeeEl.textContent = `${tdee} kcal`;
+    resultGoalEl.textContent = `${goalCalories} kcal`;
+    resultAdviceEl.textContent = `แคลอรีสำหรับเป้าหมายของคุณ: ${goalCalories} kcal/วัน`;
+    resultAdviceEl.className = categoryClass; 
+    const pathPrefix = (selectedGender === 'male') ? 'assets/images/male_' : 'assets/images/female_';
+    if (imageSuffix !== 'default.png') {
+        bodyModelImage.src = pathPrefix + imageSuffix; 
+    } else {
+        bodyModelImage.src = 'assets/images/default.png';
+    }
+    
+    // (7) บันทึกข้อมูลทั้งหมดลง localStorage
     const inputs = {
         gender: selectedGender,
         age: age,
@@ -197,6 +185,21 @@ calculatorForm.addEventListener('submit', function(event) {
         goal: selectedGoal
     };
     localStorage.setItem('kcalPathInputs', JSON.stringify(inputs));
+    
+    const metrics = {
+        bmr: bmr,
+        tdee: tdee,
+        goalCalories: goalCalories,
+        goalCarb: goalCarb,
+        goalProtein: goalProtein,
+        goalFat: goalFat
+    };
+    localStorage.setItem('kcalPathMetrics', JSON.stringify(metrics));
+
+    localStorage.setItem('kcalPathBmi', bmi.toFixed(1));
+    localStorage.setItem('kcalPathBmiCategory', bmiStatus);
+
+    // --- (แก้ไข) สิ้นสุดตรรกะ ---
 });
 
 // Initial Load (Load saved data)
@@ -255,12 +258,10 @@ window.addEventListener('load', () => {
             imageSuffix = 'healthy.png';
         }
         
-        // โหลดรูปภาพเริ่มต้นตามข้อมูลที่บันทึกไว้
         if (savedInputs) {
              const pathPrefix = (savedInputs.gender === 'male') ? 'assets/images/male_' : 'assets/images/female_';
              bodyModelImage.src = pathPrefix + imageSuffix;
         }
-
 
         resultAdviceEl.className = categoryClass;
     }

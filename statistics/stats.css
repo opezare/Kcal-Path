@@ -4,27 +4,29 @@
     --light-green: #81C784;
     --yellow: #FFC107;
     --brown: #D2691E;
-    --background-light: #FBF8F3; /* สีพื้นหลังหลักที่ดูอบอุ่น */
-    --background-gray: #f0f0f0; /* สีพื้นหลังรอง */
-    --text-dark: #333333; /* สีตัวอักษรเข้ม */
-    --text-medium: #616161; /* สีตัวอักษรกลาง */
-    --text-light: #9e9e9e; /* สีตัวอักษรอ่อน */
+    
+    /* (แก้ไข) เปลี่ยนสีพื้นหลังเป็นธีมโมเดิร์น (แนวคิดที่ 3) */
+    --background-light: #F8F9FA; /* สีเทาอ่อน (เกือบขาว) */
+    --background-gray: #f0f0f0; 
+    
+    --text-dark: #333333; 
+    --text-medium: #616161; 
+    --text-light: #9e9e9e; 
     --border-color: #e0e0e0;
 
-    --font-heading: 'Nunito', serif; /* ฟอนต์ Serif สำหรับหัวข้อ */
-    --font-body: 'Sarabun', sans-serif; /* ฟอนต์ Sans-serif สำหรับเนื้อหา */
+    --font-heading: 'Nunito', serif; 
+    --font-body: 'Sarabun', sans-serif; 
 }
 
 html {
     scroll-behavior: smooth;
-    scrollbar-width: none; /* สำหรับ Firefox */
-    -ms-overflow-style: none;  /* สำหรับ Internet Explorer และ Edge (เก่า) */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;  
 }
 
-/* --- ใช้ body จาก style copy.css --- */
 body {
     font-family: var(--font-body);
-    background-color: var(--background-light); /* ใช้สีพื้นหลังใหม่ */
+    background-color: var(--background-light); /* (แก้ไข) ใช้สีพื้นหลังใหม่ */
     margin: 0;
     padding: 0;
     display: flex;
@@ -33,10 +35,8 @@ body {
     color: var(--text-dark);
     line-height: 1.6;
     overflow-x: hidden;
-    /* padding: 20px; ถูกลบออกเพื่อให้ Navbar ชิดขอบ */
 }
 
-/* --- เพิ่มส่วนนี้เพื่อซ่อน scrollbar ใน Chrome, Safari, Edge --- */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
     display: none;
@@ -48,27 +48,27 @@ body::-webkit-scrollbar {
     width: 100%;
     max-width: 1200px;
     padding: 0;
-    margin-top: 0; /* ลบ margin-top */
+    margin-top: 0; 
 }
 
 .page-content {
-    padding: 40px 20px; /* เพิ่ม padding ให้หน้าย่อย */
+    padding: 40px 20px; 
 }
 
 .section-heading, .page-header-title {
     font-family: var(--font-heading);
-    font-size: 3.5em; /* ขนาดใหญ่ขึ้น */
+    font-size: 3.5em; 
     font-weight: 700;
     color: var(--text-dark);
     text-align: center;
-    margin-bottom: 60px; /* เพิ่มช่องว่าง */
+    margin-bottom: 60px; 
     letter-spacing: -0.05em;
 }
 
 .btn {
     display: inline-block;
     padding: 12px 25px;
-    border-radius: 30px; /* กลมมน */
+    border-radius: 30px; 
     text-decoration: none;
     font-family: var(--font-body);
     font-weight: 600;
@@ -90,10 +90,10 @@ body::-webkit-scrollbar {
 }
 
 .btn-cta {
-    background-color: var(--text-dark); /* ปุ่ม CTA สีเข้ม */
+    background-color: var(--text-dark); 
     color: #fff;
     border: 2px solid var(--text-dark);
-    padding: 15px 35px; /* ขนาดใหญ่กว่าปกติ */
+    padding: 15px 35px; 
     font-size: 1.2em;
 }
 
@@ -103,14 +103,12 @@ body::-webkit-scrollbar {
     transform: translateY(-2px);
 }
 
-/* --- ใน style.css (ส่วน Global Elements) --- */
+/* (แก้ไข) ลบดีไซน์การ์ดออก */
 .card {
-    /* เปลี่ยน background-color เป็นโปร่งใส */
-    background-color: transparent; 
-    
-    border-radius: 12px;
-    box-shadow: none; /* เอาเงาออก */
-    padding: 35px;
+    /* background-color: #fff; */ /* (ลบ) */
+    /* border-radius: 12px; */ /* (ลบ) */
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); */ /* (ลบ) */
+    padding: 0; /* (แก้ไข) */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -131,27 +129,23 @@ body::-webkit-scrollbar {
     text-decoration: none;
     font-weight: 600;
     margin-top: auto;
-    display: flex; /* เพื่อจัดวางลูกศร */
+    display: flex; 
     align-items: center;
     justify-content: center;
     gap: 5px;
     transition: color 0.3s ease;
 }
-
 .card-link:hover {
     color: var(--dark-green);
 }
-
 .card-link .arrow {
     transition: transform 0.3s ease;
 }
-
 .card-link:hover .arrow {
     transform: translateX(5px);
 }
 
 /* --- Navbar --- */
-/* นี่คือแถบหลักที่จะมีความกว้างเต็มจอ */
 .navbar {
     width: 100%;
     background-color: #fff;
@@ -160,8 +154,6 @@ body::-webkit-scrollbar {
     z-index: 1000;
     transition: box-shadow 0.3s ease;
 }
-
-/* คอนเทนเนอร์ใหม่นี้จะเก็บเนื้อหาและจัดให้อยู่ในแนวเดียวกับหน้าเว็บ */
 .navbar-content {
     display: flex;
     justify-content: space-between;
@@ -172,69 +164,58 @@ body::-webkit-scrollbar {
     padding: 20px 40px;
     box-sizing: border-box;
 }
-
-/* คลาสสำหรับเงาตอนเลื่อนเว็บยังคงเหมือนเดิม */
 .navbar.scrolled {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-
 .logo-text {
     font-family: var(--font-heading);
-    font-size: 32px; /* ขนาดใหญ่ขึ้น */
+    font-size: 32px; 
     font-weight: 700;
     color: var(--text-dark);
-    letter-spacing: 0.05em; /* เพิ่ม spacing */
+    letter-spacing: 0.05em; 
 }
-
 .main-nav {
     display: flex;
-    gap: 35px; /* เพิ่มช่องว่าง */
+    gap: 35px; 
 }
-
 .nav-item {
     text-decoration: none;
-    color: var(--text-medium); /* สีตัวอักษรปกติ */
+    color: var(--text-medium); 
     font-weight: 500;
     padding: 5px 0;
     position: relative;
     transition: color 0.3s ease;
 }
-
 .nav-item::after {
     background-color: var(--primary-green);
     height: 2px;
-    bottom: -8px; /* ปรับตำแหน่ง */
+    bottom: -8px; 
 }
-
 .nav-item:hover, .nav-item.active {
     color: var(--primary-green);
 }
-
 .nav-actions {
     display: flex;
     gap: 15px;
 }
 
-/* --- Hero Section --- */
+/* --- Hero Section (ไม่เปลี่ยนแปลง) --- */
 .hero-section {
-    background-color: var(--background-light); /* สีพื้นหลัง */
-    padding: 120px 40px; /* เพิ่ม padding ด้านบนและล่าง */
+    background-color: var(--background-light); 
+    padding: 120px 40px; 
     margin-bottom: 80px;
 }
-
 .hero-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr; /* แบ่งสัดส่วนคอลัมน์ */
+    grid-template-columns: 1.2fr 0.8fr; 
     gap: 60px;
     align-items: center;
-    max-width: 1000px; /* กำหนด max-width สำหรับเนื้อหา hero */
+    max-width: 1000px; 
     margin: 0 auto;
 }
-
 .hero-text {
     text-align: left;
 }
-
 .hero-subheading {
     font-family: var(--font-body);
     font-size: 1.2em;
@@ -244,25 +225,22 @@ body::-webkit-scrollbar {
     text-transform: uppercase;
     margin-bottom: 15px;
 }
-
 .hero-title {
     font-family: var(--font-heading);
-    font-size: 4.8em; /* ขนาดใหญ่พิเศษ */
+    font-size: 4.8em; 
     font-weight: 700;
     color: var(--text-dark);
     line-height: 1.1;
     letter-spacing: -0.05em;
     margin-bottom: 30px;
 }
-
 .hero-image-right {
     position: relative;
-    padding-bottom: 120%; /* เพื่อให้ภาพเป็นแนวตั้ง */
+    padding-bottom: 120%; 
     background-color: var(--background-gray);
     border-radius: 12px;
     overflow: hidden;
 }
-
 .hero-image-right img {
     position: absolute;
     top: 0;
@@ -272,78 +250,64 @@ body::-webkit-scrollbar {
     object-fit: cover;
 }
 
-/* --- Dashboard Summary Section --- */
+/* --- Dashboard Summary Section (ไม่เปลี่ยนแปลง) --- */
 .dashboard-section {
     padding: 0 20px;
     margin-bottom: 80px;
 }
-
-/* เพิ่มโค้ดส่วนนี้เข้าไปได้เลย */
 #dashboard-summary {
     scroll-margin-top: 1000px;
 }
-
 .dashboard-grid-layout {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr; /* แบ่งสัดส่วนคล้ายตัวอย่าง */
+    grid-template-columns: 1.5fr 1fr 1fr; 
     gap: 30px;
 }
-
 .summary-card {
-    padding: 40px; /* เพิ่ม padding ให้ card */
+    padding: 40px; 
 }
-
 .summary-card.calorie-summary {
-    grid-column: span 1; /* กลับมาเป็น 1 คอลัมน์ */
+    grid-column: span 1; 
 }
-
 .goal-text {
     font-size: 1.1em;
     color: var(--text-medium);
     margin-top: 20px;
     margin-bottom: 30px;
 }
-
 .nutrients-grid-display {
     display: flex;
     justify-content: center;
     gap: 30px;
     margin-bottom: 30px;
 }
-
 .nutrient-item {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 .nutrient-label {
     font-size: 1em;
     font-weight: 500;
     color: var(--text-medium);
     margin-top: 10px;
 }
-
 .health-stats-grid-display {
     display: flex;
     justify-content: center;
     gap: 40px;
     margin-bottom: 30px;
 }
-
 .stat-item .stat-value {
     font-family: var(--font-heading);
-    font-size: 2.5em; /* ใหญ่ขึ้น */
+    font-size: 2.5em; 
     font-weight: 700;
     color: var(--primary-green);
 }
-
 .stat-item .stat-label {
     font-size: 0.95em;
     color: var(--text-medium);
 }
-
-/* --- Progress Circles --- */
 .progress-circle {
     position: relative;
     border-radius: 50%;
@@ -353,35 +317,31 @@ body::-webkit-scrollbar {
     background: conic-gradient(
         var(--primary-green) 0%, 
         var(--primary-green) calc(var(--progress, 0) * 1%), 
-        var(--border-color) calc(var(--progress, 0) * 1%), /* ใช้ border-color */
+        var(--border-color) calc(var(--progress, 0) * 1%), 
         var(--border-color) 100%
     );
-    box-shadow: inset 0 0 0 5px rgba(0,0,0,0.03); /* เพิ่มเงาภายในเล็กน้อย */
+    box-shadow: inset 0 0 0 5px rgba(0,0,0,0.03); 
 }
-
 .progress-circle.large {
     width: 180px;
     height: 180px;
     margin: 0 auto;
 }
-
 .progress-circle.small {
     width: 90px;
     height: 90px;
 }
-
 .progress-circle .circle-content {
     background: #fff;
-    width: 85%; /* ขนาดเล็กลงเล็กน้อย */
+    width: 85%; 
     height: 85%;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* เพิ่มเงาให้วงกลมด้านใน */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
 }
-
 .progress-circle .value {
     font-family: var(--font-heading);
     font-size: 3.5em;
@@ -389,20 +349,15 @@ body::-webkit-scrollbar {
     color: var(--primary-green);
     line-height: 1;
 }
-
 .progress-circle .unit {
     font-size: 1em;
     color: var(--text-medium);
     margin-top: 5px;
 }
-
 .progress-circle.large .value { font-size: 3.5em; }
 .progress-circle.large .unit { font-size: 1.1em; }
-
 .progress-circle.small .value { font-size: 1.8em; }
 .progress-circle.small .unit { font-size: 0.8em; }
-
-/* กำหนดสีเฉพาะสำหรับวงกลมแสดงผลของสารอาหารอื่นๆ */
 .yellow-progress {
     background: conic-gradient(
         var(--yellow) 0%, 
@@ -412,7 +367,6 @@ body::-webkit-scrollbar {
     );
 }
 .yellow-progress .circle-content .value { color: var(--yellow); }
-
 .brown-progress {
     background: conic-gradient(
         var(--brown) 0%, 
@@ -423,14 +377,12 @@ body::-webkit-scrollbar {
 }
 .brown-progress .circle-content .value { color: var(--brown); }
 
-
-/* --- Tips Section --- */
+/* --- Tips Section (ไม่เปลี่ยนแปลง) --- */
 .tips-section {
     padding: 80px 0;
-    margin-bottom: 130px; /* เพิ่มค่าตรงนี้ */
+    margin-bottom: 130px; 
     background: transparent;
 }
-
 .tips-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -438,7 +390,6 @@ body::-webkit-scrollbar {
     max-width: 1100px;
     margin: 0 auto;
 }
-
 .tip-card {
     width: 250px;
     height: 400px;
@@ -453,7 +404,6 @@ body::-webkit-scrollbar {
     border: none;
     padding: 0;
 }
-
 .tip-bg {
     position: absolute;
     inset: 0;
@@ -465,11 +415,9 @@ body::-webkit-scrollbar {
     z-index: 0;
     transition: filter 0.2s;
 }
-
 .tip-card:hover .tip-bg {
     filter: brightness(0.85);
 }
-
 .tip-content {
     position: relative;
     z-index: 1;
@@ -477,42 +425,37 @@ body::-webkit-scrollbar {
     width: 100%;
     background: none;
     border-radius: 0 0 18px 18px;
-    text-align: center; /* ตัวหนังสืออยู่ตรงกลาง */
+    text-align: center; 
 }
-
 .tip-content h3,
 .tip-content p {
     color: #fff !important;
 }
-
 .tip-content .card-link {
-    color: #fff !important; /* อ่านเพิ่มเติมเป็นสีขาว */
+    color: #fff !important; 
     font-weight: 600;
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
 }
 
-/* --- Food Log Page --- */
+/* --- Food Log Page (ไม่เปลี่ยนแปลง) --- */
 .food-log-details-section {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr; /* แบ่งสัดส่วน */
+    grid-template-columns: 1.2fr 0.8fr; 
     gap: 30px;
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
 }
-
 .food-summary-card, .nutrition-breakdown-card {
     padding: 35px;
     text-align: left;
 }
-
 .meal-list {
     margin-top: 20px;
     margin-bottom: 30px;
 }
-
 .meal-item {
     border-bottom: 1px solid var(--border-color);
     padding: 20px 0;
@@ -543,7 +486,6 @@ body::-webkit-scrollbar {
     font-size: 0.9em;
     color: var(--text-light);
 }
-
 .nutrition-breakdown-card table {
     width: 100%;
     border-collapse: collapse;
@@ -565,7 +507,6 @@ body::-webkit-scrollbar {
 .nutrition-breakdown-card tr:last-child td {
     border-bottom: none;
 }
-
 .advice-box {
     background-color: var(--background-gray);
     border-left: 5px solid var(--primary-green);
@@ -574,7 +515,6 @@ body::-webkit-scrollbar {
     margin-top: 30px;
     text-align: left;
 }
-
 .advice-box p {
     margin: 0;
     font-weight: 500;
@@ -585,8 +525,7 @@ body::-webkit-scrollbar {
     font-weight: 600;
 }
 
-
-/* --- Stats Page --- */
+/* --- (แก้ไข) Stats Page --- */
 .stats-overview-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -600,14 +539,12 @@ body::-webkit-scrollbar {
     padding: 30px;
     text-align: left;
 }
-
 .stat-summary-card h3 {
     font-family: var(--font-body);
     font-size: 1.3em;
     color: var(--text-dark);
     margin-bottom: 10px;
 }
-
 .stat-summary-card .summary-value {
     font-family: var(--font-heading);
     font-size: 2.8em;
@@ -616,40 +553,139 @@ body::-webkit-scrollbar {
     margin-bottom: 5px;
     line-height: 1;
 }
-
 .stat-summary-card .summary-trend {
     font-size: 0.9em;
     color: var(--text-medium);
 }
 
-.stats-charts-section {
+/* (แก้ไข) เพิ่ม align-items: start; */
+.stats-today-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: 1fr 1fr; /* 2 คอลัมน์ */
     gap: 30px;
     width: 100%;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 auto 60px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+    align-items: start; /* <<< เพิ่มบรรทัดนี้ */
 }
 
+.stats-charts-section {
+    display: grid;
+    grid-template-columns: 1fr; /* บังคับ 1 คอลัมน์ */
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 60px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+/* (แก้ไข) ปรับ padding ให้เท่ากับ #today-log-container */
 .chart-card {
-    padding: 35px;
+    padding: 25px 30px;
 }
-
 .chart-card h2 {
     font-family: var(--font-heading);
     font-size: 1.8em;
     margin-bottom: 30px;
+    text-align: left; /* (แก้ไข) จัดชิดซ้าย */
 }
-
 .chart-card canvas {
     max-height: 350px;
     width: 100% !important;
     height: auto !important;
 }
 
+.stats-history-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 60px auto;
+    padding: 0 15px; 
+    box-sizing: border-box;
+}
+
+#log-history-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* (แก้ไข) ลบดีไซน์การ์ดออก */
+.history-day-card {
+    /* background-color: #fff; */ /* (ลบ) */
+    /* border-radius: 12px; */ /* (ลบ) */
+    padding: 25px 30px;
+    text-align: left;
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); */ /* (ลบ) */
+}
+/* (เพิ่ม) จัดการ์ด "วันนี้" ที่อยู่ใน .stats-today-grid */
+#today-log-container {
+    padding: 25px 30px;
+    text-align: left;
+}
+
+.history-day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.history-day-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+.history-day-header .history-day-kcal {
+    font-family: var(--font-body);
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+.history-day-summary {
+    display: flex;
+    gap: 20px;
+    font-size: 0.9em;
+    color: var(--text-medium);
+    margin-bottom: 15px;
+}
+
+.history-day-meallist {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    font-size: 0.95em;
+    color: var(--text-dark);
+}
+.history-day-meallist li {
+    display: flex;
+    justify-content: space-between; /* แยกชื่อและแคลอรี */
+    align-items: center;
+    padding: 8px 0; /* เพิ่มช่องไฟ */
+    border-bottom: 1px solid #f0f0f0; /* เส้นคั่นจางๆ */
+}
+.history-day-meallist li:last-child {
+    border-bottom: none;
+}
+.history-day-meallist .meal-name {
+    color: var(--text-dark);
+}
+.history-day-meallist .meal-kcal {
+    color: var(--text-medium);
+    font-weight: 600;
+    flex-shrink: 0; /* ไม่ให้ตัวเลขถูกบีบ */
+    padding-left: 15px; /* กันชน */
+}
+
+
 /* --- Responsive Adjustments --- */
 @media (max-width: 900px) {
-    .navbar {
+    .navbar-content {
         flex-direction: column;
         gap: 15px;
         padding: 15px 20px;
@@ -674,7 +710,7 @@ body::-webkit-scrollbar {
         font-size: 1em;
     }
     .hero-image-right {
-        padding-bottom: 75%; /* ปรับสัดส่วนภาพสำหรับมือถือ */
+        padding-bottom: 75%; 
     }
     .dashboard-grid-layout, .food-log-details-section, .stats-charts-section {
         grid-template-columns: 1fr;
@@ -703,6 +739,11 @@ body::-webkit-scrollbar {
     .nutrients-grid-display, .health-stats-grid-display {
         flex-wrap: wrap;
         gap: 20px;
+    }
+    
+    /* (เพิ่ม) Responsive สำหรับ Layout ใหม่ */
+    .stats-today-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -749,11 +790,11 @@ body::-webkit-scrollbar {
 .nav-actions .btn {
     display: flex;
     align-items: center;
-    gap: 8px; /* เพิ่มระยะห่างระหว่างไอคอนกับข้อความ */
+    gap: 8px; 
 }
 
 .nav-actions .btn svg {
-    width: 20px;  /* กำหนดขนาดไอคอน */
+    width: 20px;  
     height: 20px;
-    fill: currentColor; /* ทำให้ไอคอนเป็นสีเดียวกับสีตัวอักษร */
+    fill: currentColor; 
 }

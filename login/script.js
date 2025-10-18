@@ -52,7 +52,7 @@ function initLogin(){
   });
 
   $("#forgot").addEventListener("click", () => {
-    alert("ลืมรหัสผ่าน — เดโม: สมมุติว่ารับอีเมลเพื่อรีเซ็ต");
+    alert("ลืมรหัสผ่าน — : ยืนยันอีเมลเพื่อรีเซ็ต");
   });
 }
 
@@ -98,7 +98,8 @@ function initWizard(){
   if(confirmBtn){
     confirmBtn.addEventListener("click", () => {
       if(validate(current)){
-        alert("ยืนยันสำเร็จ! (เดโม)\nระบบจะบันทึกข้อมูลของคุณไว้ใน sessionStorage");
+        alert("ยืนยันสำเร็จ! \nระบบจะบันทึกข้อมูลของคุณไว้");
+        go("../page/index.html");
       }
     });
   }

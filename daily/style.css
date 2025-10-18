@@ -42,6 +42,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+
 /* --- Global Elements --- */
 .main-content {
     width: 100%;
@@ -755,4 +756,141 @@ body::-webkit-scrollbar {
     width: 20px;  /* กำหนดขนาดไอคอน */
     height: 20px;
     fill: currentColor; /* ทำให้ไอคอนเป็นสีเดียวกับสีตัวอักษร */
+}
+
+/* --- (แก้ไข) Styles for Food Search Box (Minimal) --- */
+.food-search-container {
+    width: 100%;
+    margin-bottom: 25px;
+    position: relative; /* สำหรับกล่อง suggestions */
+}
+.food-search-container label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+
+/* (แก้ไข) ทำให้เป็นแบบขีดเส้นใต้ มินิมอล */
+.food-search-container input {
+    width: 100%;
+    padding: 12px 5px; /* ลด padding ด้านข้าง */
+    border-radius: 0; /* ไม่มีมุมมน */
+    border: none; /* ลบขอบทั้งหมด */
+    border-bottom: 2px solid var(--border-color); /* เพิ่มขีดเส้นใต้ */
+    font-family: var(--font-body);
+    font-size: 1em;
+    box-sizing: border-box; 
+    background-color: transparent; /* พื้นหลังโปร่งใส */
+    transition: border-color 0.3s ease;
+}
+
+/* (แก้ไข) ทำให้ focus เปลี่ยนสีเส้นใต้ */
+.food-search-container input:focus {
+    outline: none;
+    border-bottom-color: var(--primary-green); /* เปลี่ยนสีเส้นใต้เมื่อ focus */
+    box-shadow: none; /* ลบเงา */
+}
+
+/* --- (เพิ่มใหม่) Styles for Suggestions --- */
+#food-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none; /* เริ่มต้นด้วยการซ่อน */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+#food-suggestions li {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--background-gray);
+    cursor: pointer;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+}
+#food-suggestions li:last-child {
+    border-bottom: none;
+}
+#food-suggestions li:hover {
+    background-color: var(--background-gray, #f5f5f5);
+    color: var(--primary-green);
+}
+#food-suggestions .suggestion-kcal {
+    color: var(--text-medium);
+    font-size: 0.9em;
+}
+
+.food-summary-card, .nutrition-breakdown-card {
+    padding: 35px;
+    text-align: left;
+}
+
+/* --- (เพิ่ม/แก้ไข) ทำให้การ์ดขวาลอยตาม --- */
+.nutrition-breakdown-card {
+    position: sticky;
+    top: 90px; /* ระยะห่างจากขอบบน (เผื่อ Navbar) */
+    align-self: start; /* ป้องกันไม่ให้การ์ดยืดตามการ์ดซ้าย */
+}
+
+/* --- (แก้ไข) Styles for Meal Type Buttons (Grid Layout + New Hover) --- */
+.meal-type-buttons {
+    display: grid; /* (แก้ไข) เปลี่ยนเป็น Grid */
+    grid-template-columns: repeat(3, 1fr); /* (แก้ไข) 3 คอลัมน์เท่ากัน */
+    gap: 8px; /* ระยะห่างระหว่างปุ่ม */
+    /* ลบ flex-wrap, overflow, padding-bottom */
+}
+
+/* ปุ่มสถานะปกติ - สีเทาอ่อน ไร้ขอบ */
+.meal-type-btn {
+    font-family: var(--font-body);
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 8px 10px; /* ปรับ padding เล็กน้อย */
+    border-radius: 20px; 
+    border: 2px solid transparent; /* ไร้ขอบ */
+    background-color: var(--background-gray);
+    color: var(--text-medium);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%; /* (เพิ่ม) ให้เต็มความกว้าง grid cell */
+    box-sizing: border-box; /* (เพิ่ม) */
+    text-align: center; /* (เพิ่ม) */
+}
+
+/* (แก้ไข) ปุ่มสถานะ Hover - เปลี่ยนแค่ขอบและตัวอักษร */
+.meal-type-btn:hover {
+    border-color: var(--primary-green); /* (แก้ไข) */
+    background-color: var(--background-gray); /* (แก้ไข) สีเดิม */
+    color: var(--primary-green); /* (แก้ไข) */
+}
+
+/* ปุ่มที่ถูกเลือก (active) - สีเขียวเข้ม ตัวอักษรขาว */
+.meal-type-btn.active {
+    background-color: var(--primary-green); 
+    border-color: transparent; 
+    color: #fff; 
+    font-weight: 600;
+}
+
+/* (เพิ่ม) สไตล์ hover ของปุ่ม active ไม่ให้เพี้ยน */
+.meal-type-btn.active:hover {
+    background-color: var(--dark-green); /* เข้มขึ้นนิดหน่อย */
+    border-color: transparent;
+    color: #fff;
+}
+
+/* ปุ่มสถานะ Focus - "ไม่มี" ขอบดำ/เงา */
+.meal-type-btn:focus {
+    outline: none; 
+    box-shadow: none; 
+    border-color: transparent; 
 }

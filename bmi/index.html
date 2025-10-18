@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KcalPath - คำนวณ BMI & BMR</title>
+    
+    <link rel="stylesheet" href="style.css"> 
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <img id="body-model-image" src="./assets/images/default.png" alt="Body Model"> 
+
+    <header class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span class="logo-text">KcalPath</span>
+            </div>
+            <nav class="main-nav">
+                <a href="../page/index.html" class="nav-item">หน้าแรก</a>
+                <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
+                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
+                <a href="index.html" class="nav-item active">คำนวณ</a> 
+            </nav>
+            <div class="nav-actions">
+                <a href="../account.html" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>My Account</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content page-content">
+        <h1 class="page-header-title">คำนวณ BMI & TDEE</h1>
+
+        <section class="food-log-details-section">
+
+            <div class="card food-summary-card">
+                <h2 class="card-title">กรอกข้อมูลของคุณ</h2>
+                
+                <form id="calculator-form">
+                    
+                    <div class="food-search-container">
+                        <label>เพศ</label>
+                        <div class="meal-type-buttons" id="gender-buttons">
+                            <button type="button" class="meal-type-btn active" data-value="male">ชาย</button>
+                            <button type="button" class="meal-type-btn" data-value="female">หญิง</button>
+                        </div>
+                    </div>
+
+                    <div class="food-search-container">
+                        <label for="age-input">อายุ (ปี)</label>
+                        <input type="number" id="age-input" placeholder="เช่น 25" required>
+                    </div>
+
+                    <div class="food-search-container">
+                        <label for="weight-input">น้ำหนัก (kg)</label>
+                        <input type="number" id="weight-input" placeholder="เช่น 60" step="0.1" required>
+                    </div>
+
+                    <div class="food-search-container">
+                        <label for="height-input">ส่วนสูง (cm)</label>
+                        <input type="number" id="height-input" placeholder="เช่น 170" required>
+                    </div>
+
+                    <div class="food-search-container custom-select-container" id="activity-select-container">
+                        <label>ระดับกิจกรรม</label>
+                        <div class="select-display" id="activity-display" tabindex="0">
+                            <span>ไม่ออกกำลังกายเลย</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                        
+                        <ul class="select-options" id="activity-options">
+                            <li data-value="1.2">
+                                <div class="option-left">
+                                    <span class="option-primary">ไม่ออกกำลังกายเลย</span>
+                                </div>
+                            </li>
+                            <li data-value="1.375">
+                                <div class="option-left">
+                                    <span class="option-primary">ออกกำลังกายเบา (1-3 วัน/สัปดาห์)</span>
+                                </div>
+                            </li>
+                            <li data-value="1.55">
+                                <div class="option-left">
+                                    <span class="option-primary">ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)</span>
+                                </div>
+                            </li>
+                            <li data-value="1.725">
+                                <div class="option-left">
+                                    <span class="option-primary">ออกกำลังกายหนัก (6-7 วัน/สัปดาห์)</span>
+                                </div>
+                            </li>
+                            <li data-value="1.9">
+                                <div class="option-left">
+                                    <span class="option-primary">ออกกำลังกายหนักมาก (2 ครั้ง/วัน หรือใช้แรงกายตลอดวัน)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="food-search-container">
+                        <label>เป้าหมาย</label>
+                        <div class="meal-type-buttons goal-buttons" id="goal-buttons">
+                            <button type="button" class="meal-type-btn active" data-value="maintain">คงที่</button>
+                            <button type="button" class="meal-type-btn" data-value="lose">ลดน้ำหนัก</button>
+                            <button type="button" class="meal-type-btn" data-value="gain">เพิ่มน้ำหนัก</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-cta" id="calculate-btn" style="width: 100%; margin-top: 25px;">
+                        คำนวณ
+                    </button>
+                </form>
+            </div> 
+            
+            <div class="card nutrition-breakdown-card">
+                <h2 class="card-title">ผลลัพธ์ของคุณ</h2>
+                
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>BMI (ดัชนีมวลกาย)</td>
+                            <td id="result-bmi" style="font-weight: 700; color: var(--primary-green); font-size: 1.2em;">-</td>
+                        </tr>
+                        <tr>
+                            <td>เกณฑ์</td>
+                            <td id="result-bmi-category">-</td>
+                        </tr>
+                        <tr>
+                            <td>BMR (เผาผลาญพื้นฐาน)</td>
+                            <td id="result-bmr" style="font-weight: 700;">- kcal</td>
+                        </tr>
+                        <tr>
+                            <td>TDEE (เผาผลาญรวม)</td>
+                            <td id="result-tdee" style="font-weight: 700;">- kcal</td>
+                        </tr>
+                        <tr>
+                            <td>เป้าหมายแคลอรี</td>
+                            <td id="result-goal" style="font-weight: 700; color: var(--primary-green); font-size: 1.2em;">- kcal</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="advice-box" style="margin-top: 30px;">
+                    <p class="advice-message" id="result-advice">กรุณากรอกข้อมูลเพื่อคำนวณ</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script src="calculator.js"></script> 
+</body>
+</html>

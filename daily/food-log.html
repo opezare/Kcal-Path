@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KcalPath - บันทึกอาหาร</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span class="logo-text">KcalPath</span>
+            </div>
+            <nav class="main-nav">
+                <a href="../page/index.html" class="nav-item">หน้าแรก</a>
+                <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
+                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
+                <a href="../bmi/index.html" class="nav-item">คำนวณ</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="account.html" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>My Account</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content page-content">
+        <h1 class="page-header-title">บันทึกอาหารประจำวัน</h1>
+
+        <section class="food-log-details-section">
+            <div class="card food-summary-card">
+                <h2 class="card-title">มื้ออาหารวันนี้</h2>
+                <div class="meal-list">
+                    </div>
+                
+                <div class="food-search-container">
+                    <label for="food-search-input">ค้นหาอาหาร</label>
+                    <input type="text" id="food-search-input" placeholder="พิมพ์ชื่ออาหาร เช่น 'กะเพราไก่'..." autocomplete="off">
+                    <ul id="food-suggestions"></ul>
+                </div>
+                
+                <div class="food-search-container">
+                    <label>เพิ่มในมื้อ</label>
+                    <div class="meal-type-buttons" id="meal-type-buttons">
+                        <button type="button" class="meal-type-btn" data-value="มื้อเช้า">มื้อเช้า</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อเที่ยง">มื้อเที่ยง</button>
+                        <button type="button" class="meal-type-btn active" data-value="มื้อเย็น">มื้อเย็น</button>
+                        <button type="button" class="meal-type-btn" data-value="ของว่าง">ของว่าง</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อก่อนออกกำลังกาย">มื้อก่อนฯ</button>
+                        <button type="button" class="meal-type-btn" data-value="มื้อหลังออกกำลังกาย">มื้อหลังฯ</button>
+                    </div>
+                </div>
+                <button class="btn btn-cta" id="add-food-btn" style="width: 100%; margin-top: 15px;">เพิ่มรายการ</button>
+
+            </div>
+
+            <div class="card nutrition-breakdown-card">
+                <h2 class="card-title">ภาพรวมสารอาหาร</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สารอาหาร</th>
+                            <th>ได้รับ</th>
+                            <th>เป้าหมาย</th>
+                            <th>คงเหลือ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>พลังงาน</td>
+                            <td id="log-total-kcal">0 kcal</td>
+                            <td>1900 kcal</td>
+                            <td id="log-remaining-kcal">1900 kcal</td>
+                        </tr>
+                        <tr>
+                            <td>โปรตีน</td>
+                            <td id="log-total-protein">0 g</td>
+                            <td>85 g</td>
+                            <td id="log-remaining-protein" class="warning-text">85 g</td>
+                        </tr>
+                        <tr>
+                            <td>ไขมัน</td>
+                            <td id="log-total-fat">0 g</td>
+                            <td>65 g</td>
+                            <td id="log-remaining-fat">65 g</td>
+                        </tr>
+                        <tr>
+                            <td>คาร์โบไฮเดรต</td>
+                            <td id="log-total-carb">0 g</td>
+                            <td>220 g</td>
+                            <td id="log-remaining-carb">220 g</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="advice-box">
+                    <p class="advice-message" id="food-log-protein-advice"></p>
+                    <p class="advice-message" id="food-log-fat-status"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="database.js"></script>
+    <script src="food-log-hybrid.js"></script> 
+    <script>
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KcalPath - สถิติของฉัน</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="../login/auth-guard.js" defer></script>
+    
+    <link rel="stylesheet" href="stats.css"> 
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -21,13 +24,13 @@
                 <span class="logo-text">KcalPath</span>
             </div>
             <nav class="main-nav">
-                <a href="../page/index.html" class="nav-item">หน้าแรก</a>
+                <a href="../page/page.html" class="nav-item">หน้าแรก</a>
                 <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
-                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
-                <a href="../bmi/index.html" class="nav-item">คำนวณ</a>
+                <a href="../statistics/stats.html" class="nav-item active">ประวัติ</a> 
+                <a href="../bmi/calculator.html" class="nav-item">คำนวณ</a>
             </nav>
             <div class="nav-actions">
-                <a href="account.html" class="btn btn-primary">
+                <a href="../login/login.html" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
                         <path d="M0 0h24v24H0V0z" fill="none"/>
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -36,7 +39,8 @@
                 </a>
             </div>
 
-        </div> </header>
+        </div> 
+    </header>
 
     <main class="main-content page-content">
         <h1 class="page-header-title">ประวัติสถิติสุขภาพของคุณ</h1>
@@ -44,138 +48,516 @@
         <section class="stats-overview-section">
             <div class="card stat-summary-card">
                 <h3>น้ำหนักปัจจุบัน</h3>
-                <p class="summary-value">70.2 kg</p>
-                <p class="summary-trend">ลดลง 0.5 kg จากสัปดาห์ที่แล้ว</p>
+                <p class="summary-value">- kg</p>
+                <p class="summary-trend">...</p>
             </div>
             <div class="card stat-summary-card">
                 <h3>BMI ล่าสุด</h3>
-                <p class="summary-value">23.5</p>
-                <p class="summary-trend">อยู่ในเกณฑ์ปกติ</p>
+                <p class="summary-value">-</p>
+                <p class="summary-trend">...</p>
             </div>
             <div class="card stat-summary-card">
-                <h3>แคลอรี่เฉลี่ย/วัน</h3>
-                <p class="summary-value">1650 kcal</p>
-                <p class="summary-trend">ต่ำกว่าเป้าหมายเล็กน้อย</p>
+                <h3>แคลอรี่วันนี้</h3>
+                <p class="summary-value">- kcal</p>
+                <p class="summary-trend">...</p>
             </div>
         </section>
+
+        <section class="stats-today-grid">
+            
+            <div class="card" id="today-log-container">
+                <p style="color: var(--text-medium); text-align: center;">กำลังโหลดข้อมูลวันนี้...</p>
+            </div>
+            
+            <div class="card chart-card">
+                <div class="history-day-header">
+                    <h3>สัดส่วนสารอาหาร (วันนี้)</h3>
+                    <span class="history-day-kcal" id="macros-total-grams"></span>
+                </div>
+                <canvas id="macrosPieChart"></canvas>
+            </div>
+        
+        </section>
+
 
         <section class="stats-charts-section">
             <div class="card chart-card">
-                <h2 class="card-title">แนวโน้มแคลอรี่รายสัปดาห์</h2>
+                <h2 class="card-title">แคลอรี่ 7 วันล่าสุด</h2>
                 <canvas id="caloriesChart"></canvas>
             </div>
-
-            <div class="card chart-card">
-                <h2 class="card-title">แนวโน้มน้ำหนักรายเดือน</h2>
-                <canvas id="weightChart"></canvas>
-            </div>
         </section>
+        
+        <section class="stats-history-section">
+            <h2 class="card-title" style="text-align: left; margin-bottom: 30px;">ประวัติการกินย้อนหลัง (วันอื่นๆ)</h2>
+            
+            <div id="log-history-container">
+                </div>
+        </section>
+
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            const rootStyles = getComputedStyle(document.documentElement);
+            const colorPrimaryGreen = rootStyles.getPropertyValue('--primary-green').trim();
+            const colorYellow = rootStyles.getPropertyValue('--yellow').trim();
+            const colorBrown = rootStyles.getPropertyValue('--brown').trim();
+            const colorBackgroundLight = rootStyles.getPropertyValue('--background-light').trim();
+            const colorTextDark = rootStyles.getPropertyValue('--text-dark').trim();
+            const colorTextMedium = rootStyles.getPropertyValue('--text-medium').trim();
+
             Chart.register(ChartDataLabels);
 
-            const commonChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: 'var(--dark-gray)', font: { size: 10 } }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(0,0,0,0.05)' },
-                        ticks: { color: 'var(--dark-gray)', font: { size: 10 } }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    datalabels: {
-                        display: false
-                    }
+            function updateSummaryCards() {
+                const savedInputs = JSON.parse(localStorage.getItem('kcalPathInputs'));
+                const savedBmi = localStorage.getItem('kcalPathBmi');
+                const savedBmiCategory = localStorage.getItem('kcalPathBmiCategory');
+                const savedMeals = JSON.parse(localStorage.getItem('kcalPathMeals') || '[]');
+                const todayKcal = savedMeals.reduce((sum, meal) => sum + meal.kcal, 0);
+
+                const weightCardVal = document.querySelector('.stat-summary-card:nth-child(1) .summary-value');
+                const weightCardTrend = document.querySelector('.stat-summary-card:nth-child(1) .summary-trend');
+                if (savedInputs && savedInputs.weight) {
+                    weightCardVal.textContent = `${savedInputs.weight} kg`;
+                    weightCardTrend.textContent = "ข้อมูลล่าสุดจากหน้าคำนวณ";
+                } else {
+                    weightCardVal.textContent = "- kg";
+                    weightCardTrend.textContent = "กรุณาคำนวณ BMI";
                 }
-            };
 
-            const caloriesData = {
-                labels: ['สัปดาห์ 1', 'สัปดาห์ 2', 'สัปดาห์ 3', 'สัปดาห์ 4', 'สัปดาห์ 5', 'สัปดาห์ 6'],
-                datasets: [{
-                    label: 'แคลอรี่เฉลี่ย (kcal)',
-                    data: [1700, 1650, 1580, 1620, 1550, 1500],
-                    borderColor: 'var(--primary-green)',
-                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'var(--primary-green)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'var(--primary-green)'
-                }]
-            };
+                const bmiCardVal = document.querySelector('.stat-summary-card:nth-child(2) .summary-value');
+                const bmiCardTrend = document.querySelector('.stat-summary-card:nth-child(2) .summary-trend');
+                if (savedBmi && savedBmiCategory) {
+                    bmiCardVal.textContent = savedBmi;
+                    bmiCardTrend.textContent = `อยู่ในเกณฑ์: ${savedBmiCategory}`;
+                } else {
+                    bmiCardVal.textContent = "-";
+                    bmiCardTrend.textContent = "กรุณาคำวณ BMI";
+                }
 
-            const caloriesCtx = document.getElementById('caloriesChart').getContext('2d');
-            new Chart(caloriesCtx, {
-                type: 'line',
-                data: caloriesData,
-                options: {
-                    ...commonChartOptions,
-                    scales: {
-                        ...commonChartOptions.scales,
-                        y: { ...commonChartOptions.scales.y, title: { display: true, text: 'kcal', color: 'var(--dark-gray)' } }
-                    },
-                     plugins: {
-                        ...commonChartOptions.plugins,
-                        datalabels: {
-                            display: true,
-                            align: 'top',
-                            color: 'var(--text-color)',
-                            font: { size: 10, weight: 'bold' }
+                const kcalCardVal = document.querySelector('.stat-summary-card:nth-child(3) .summary-value');
+                const kcalCardTrend = document.querySelector('.stat-summary-card:nth-child(3) .summary-trend');
+                
+                kcalCardVal.textContent = `${todayKcal.toFixed(0)} kcal`;
+                kcalCardTrend.textContent = "ข้อมูลจากหน้าบันทึกอาหาร";
+            }
+
+            function renderHistoryLog() {
+                const todayContainer = document.getElementById('today-log-container');
+                const historyContainer = document.getElementById('log-history-container');
+                
+                if (!todayContainer || !historyContainer) return;
+
+                const todayMeals = JSON.parse(localStorage.getItem('kcalPathMeals') || '[]');
+                const history = JSON.parse(localStorage.getItem('kcalPathHistory') || '{}');
+                const dates = Object.keys(history).sort().reverse(); 
+
+                // (เพิ่ม) Logic การจัดกลุ่มอาหารในกราฟแท่ง
+                const groupedMeals = new Map();
+                todayMeals.forEach(meal => {
+                    const key = meal.name; // จัดกลุ่มตามชื่อ
+                    if (groupedMeals.has(key)) {
+                        const existing = groupedMeals.get(key);
+                        existing.count += 1;
+                        existing.kcal += meal.kcal;
+                        // สามารถรวม macro อื่นๆ ได้ถ้าต้องการ
+                    } else {
+                        groupedMeals.set(key, {
+                            name: meal.name,
+                            kcal: meal.kcal,
+                            count: 1
+                        });
+                    }
+                });
+                const chartMeals = Array.from(groupedMeals.values());
+
+                // --- ส่วนของ "วันนี้" (Today) ---
+                if (todayMeals.length > 0) {
+                    const totalKcal = todayMeals.reduce((sum, meal) => sum + meal.kcal, 0);
+                    const totalProtein = todayMeals.reduce((sum, meal) => sum + meal.protein, 0);
+                    const totalFat = todayMeals.reduce((sum, meal) => sum + meal.fat, 0);
+                    const totalCarb = todayMeals.reduce((sum, meal) => sum + meal.carb, 0);
+                    
+                    // (แก้ไข) คำนวณความสูงจาก "กลุ่ม" อาหาร
+                    const chartHeight = chartMeals.length * 50; 
+
+                    todayContainer.innerHTML = `
+                        <div class="history-day-header" style="margin-bottom: 10px;">
+                            <h3>วันนี้</h3>
+                            <span class="history-day-kcal">${totalKcal.toFixed(0)} kcal</span>
+                        </div>
+                        <div class="history-day-summary" style="margin-bottom: 10px;">
+                            <span>โปรตีน ${totalProtein.toFixed(1)}g</span>
+                            <span>ไขมัน ${totalFat.toFixed(1)}g</span>
+                            <span>คาร์บ ${totalCarb.toFixed(1)}g</span>
+                        </div>
+                        
+                        <div style="height: ${chartHeight}px; margin-top: 0;"> 
+                            <canvas id="todayMealsChart"></canvas>
+                        </div>
+                    `;
+
+                    const mealsCtx = document.getElementById('todayMealsChart').getContext('2d');
+                    
+                    // (แก้ไข) ใช้ข้อมูลที่จัดกลุ่มแล้ว
+                    const mealLabels = chartMeals.map(meal => meal.count > 1 ? `${meal.name} (x${meal.count})` : meal.name);
+                    const mealData = chartMeals.map(meal => meal.kcal);
+                    
+                    new Chart(mealsCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: mealLabels,
+                            datasets: [{
+                                label: 'แคลอรี่',
+                                data: mealData,
+                                backgroundColor: 'rgba(76, 175, 80, 0.6)', 
+                                borderColor: colorPrimaryGreen,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y', 
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            layout: {
+                                padding: {
+                                    right: 40 
+                                }
+                            },
+                            scales: {
+                                x: { 
+                                    beginAtZero: true,
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: colorTextMedium,
+                                        font: { size: 10 } 
+                                    }
+                                },
+                                y: { 
+                                    grid: { display: false },
+                                    ticks: {
+                                        color: colorTextDark,
+                                        font: { size: 12 } 
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false 
+                                },
+                                datalabels: {
+                                    display: true,
+                                    anchor: 'end', 
+                                    align: 'end',  
+                                    color: colorTextDark,
+                                    font: { size: 12, weight: '600' }, 
+                                    formatter: (value) => value.toFixed(0) + ' kcal'
+                                }
+                            }
                         }
-                    }
+                    });
+
+                } else {
+                    todayContainer.innerHTML = `
+                        <div class="history-day-header">
+                            <h3>วันนี้</h3>
+                        </div>
+                        <p style="color: var(--text-medium); text-align: center; padding: 20px 0;">ยังไม่มีข้อมูลอาหารสำหรับวันนี้</p>
+                    `;
                 }
-            });
 
-            const weightData = {
-                labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'],
-                datasets: [{
-                    label: 'น้ำหนัก (kg)',
-                    data: [72, 71.5, 71, 70.8, 70.5, 70.2, 70, 69.8],
-                    borderColor: 'var(--yellow)',
-                    backgroundColor: 'rgba(255, 193, 7, 0.2)',
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: 'var(--yellow)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'var(--yellow)'
-                }]
-            };
+                // --- ส่วนของ "วันเก่า" (History) ---
+                
+                function getYYYYMMDD(date) {
+                    const year = date.getFullYear();
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const day = date.getDate().toString().padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                }
 
-            const weightCtx = document.getElementById('weightChart').getContext('2d');
-            new Chart(weightCtx, {
-                type: 'line',
-                data: weightData,
-                options: {
-                    ...commonChartOptions,
+                const today = new Date();
+                const yesterday = new Date();
+                yesterday.setDate(today.getDate() - 1);
+                const yesterdayString = getYYYYMMDD(yesterday);
+                
+                let historyHtml = '';
+                if (dates.length > 0) {
+                    dates.forEach(date => { 
+                        const meals = history[date];
+                        if (!meals || meals.length === 0) return; 
+
+                        let displayDate = '';
+                        if (date === yesterdayString) {
+                            displayDate = 'เมื่อวานนี้';
+                        } else {
+                            const dateObj = new Date(date + 'T00:00:00'); 
+                            displayDate = dateObj.toLocaleDateString('th-TH', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
+
+                        const totalKcal = meals.reduce((sum, meal) => sum + meal.kcal, 0);
+                        const totalProtein = meals.reduce((sum, meal) => sum + meal.protein, 0);
+                        const totalFat = meals.reduce((sum, meal) => sum + meal.fat, 0);
+                        const totalCarb = meals.reduce((sum, meal) => sum + meal.carb, 0);
+
+                        const mealListHtml = meals.map(meal => `
+                            <li>
+                                <span class="meal-name">${meal.name}</span>
+                                <span class="meal-kcal">${meal.kcal.toFixed(0)} kcal</span>
+                            </li>
+                        `).join('');
+
+                        historyHtml += `
+                            <div class="history-day-card">
+                                <div class="history-day-header">
+                                    <h3>${displayDate}</h3>
+                                    <span class="history-day-kcal">${totalKcal.toFixed(0)} kcal</span>
+                                </div>
+                                <div class="history-day-summary">
+                                    <span>โปรตีน ${totalProtein.toFixed(1)}g</span>
+                                    <span>ไขมัน ${totalFat.toFixed(1)}g</span>
+                                    <span>คาร์บ ${totalCarb.toFixed(1)}g</span>
+                                </div>
+                                <ul class="history-day-meallist">
+                                    ${mealListHtml}
+                                </ul>
+                            </div>
+                        `;
+                    });
+                    historyContainer.innerHTML = historyHtml;
+                } else {
+                    historyContainer.innerHTML = '<p style="text-align: center; color: var(--text-medium);">ยังไม่มีประวัติการกินย้อนหลัง</p>';
+                }
+            }
+
+            // 4. ฟังก์ชันสร้างกราฟ
+            function renderCharts() {
+                
+                const commonChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
-                        ...commonChartOptions.scales,
-                        y: { ...commonChartOptions.scales.y, title: { display: true, text: 'กิโลกรัม', color: 'var(--dark-gray)' } }
+                        x: { 
+                            grid: { display: false }, 
+                            ticks: { color: colorTextMedium, font: { size: 10 } } 
+                        },
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: 'rgba(0,0,0,0.05)' }, 
+                            ticks: { color: colorTextMedium, font: { size: 10 } } 
+                        }
                     },
                     plugins: {
-                        ...commonChartOptions.plugins,
-                        datalabels: {
-                            display: true,
-                            align: 'top',
-                            color: 'var(--text-color)',
-                            font: { size: 10, weight: 'bold' }
+                        legend: { display: false },
+                        datalabels: { display: false }
+                    }
+                };
+
+                // --- 4.1 กราฟแคลอรี่ (Real-time) ---
+                const caloriesCtx = document.getElementById('caloriesChart').getContext('2d');
+                
+                const history = JSON.parse(localStorage.getItem('kcalPathHistory') || '{}');
+                const todayMeals = JSON.parse(localStorage.getItem('kcalPathMeals') || '[]');
+
+                const allDates = Object.keys(history).sort(); 
+                const recentDates = allDates.slice(-6); 
+                
+                const chartLabels = [];
+                const chartData = [];
+                const monthNames = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+                
+                recentDates.forEach(date => {
+                    const parts = date.split('-');
+                    const day = parseInt(parts[2], 10);
+                    const monthIndex = parseInt(parts[1], 10) - 1;
+                    chartLabels.push(`${day} ${monthNames[monthIndex]}`); 
+                    const meals = history[date] || [];
+                    const totalKcal = meals.reduce((sum, meal) => sum + meal.kcal, 0);
+                    chartData.push(totalKcal);
+                });
+
+                if (todayMeals.length > 0) {
+                    const todayKcal = todayMeals.reduce((sum, meal) => sum + meal.kcal, 0);
+                    chartLabels.push('วันนี้');
+                    chartData.push(todayKcal);
+                }
+
+                const caloriesData = {
+                    labels: chartLabels, 
+                    datasets: [{
+                        label: 'แคลอรี่ (kcal)',
+                        data: chartData, 
+                        borderColor: colorPrimaryGreen, 
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)', 
+                        fill: true, 
+                        tension: 0.1, 
+                        borderWidth: 3, 
+                        pointRadius: 4, 
+                        pointHoverRadius: 7, 
+                        pointBackgroundColor: colorPrimaryGreen, 
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: colorPrimaryGreen
+                    }]
+                };
+                
+                if (chartData.length > 0) {
+                    new Chart(caloriesCtx, {
+                        type: 'line', data: caloriesData,
+                        options: {
+                             ...commonChartOptions,
+                            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'kcal', color: colorTextMedium } } }, 
+                            plugins: { 
+                                ...commonChartOptions.plugins, 
+                                datalabels: { 
+                                    display: true, 
+                                    align: 'top', 
+                                    color: colorTextDark, 
+                                    font: { size: 10, weight: 'bold' } 
+                                } 
+                            }
                         }
+                    });
+                } else {
+                    caloriesCtx.canvas.style.display = 'none';
+                    const titleEl = document.querySelector('.stats-charts-section .chart-card');
+                    if(titleEl) {
+                         titleEl.innerHTML += '<p style="color: var(--text-medium); text-align: center;">ยังไม่มีข้อมูลสำหรับสร้างกราฟ (อย่างน้อย 1 วัน)</p>';
                     }
                 }
-            });
+
+                // --- 4.2 กราฟวงกลม (Pie Chart) ---
+                const pieCtx = document.getElementById('macrosPieChart').getContext('2d');
+                const totalProtein = todayMeals.reduce((sum, meal) => sum + meal.protein, 0);
+                const totalFat = todayMeals.reduce((sum, meal) => sum + meal.fat, 0);
+                const totalCarb = todayMeals.reduce((sum, meal) => sum + meal.carb, 0);
+                const totalMacros = totalProtein + totalFat + totalCarb;
+
+                const macrosGramsEl = document.getElementById('macros-total-grams');
+                if (macrosGramsEl) {
+                    if (totalMacros > 0) {
+                        macrosGramsEl.textContent = `${totalMacros.toFixed(1)} g`;
+                        macrosGramsEl.style.color = 'var(--primary-green)'; 
+                    } else {
+                        macrosGramsEl.textContent = ''; 
+                    }
+                }
+
+                const centerTextPlugin = {
+                    id: 'centerText',
+                    afterDraw: (chart) => {
+                        if (totalMacros === 0) return; 
+
+                        const ctx = chart.ctx;
+                        const { width, height } = chart.chartArea;
+                        const x = width / 2;
+                        const y = height / 2;
+                        
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+
+                        ctx.font = '600 1.0em ' + rootStyles.getPropertyValue('--font-body'); 
+                        ctx.fillStyle = colorTextMedium; 
+                        ctx.fillText('รวม', x, y - 10);
+
+                        ctx.font = '700 1.8em ' + rootStyles.getPropertyValue('--font-heading'); 
+                        ctx.fillStyle = colorTextDark; 
+                        ctx.fillText(totalMacros.toFixed(1) + ' g', x, y + 15);
+                        
+                        ctx.restore();
+                    }
+                };
+
+                const macrosData = {
+                    labels: ['โปรตีน (g)', 'ไขมัน (g)', 'คาร์โบไฮเดรต (g)'],
+                    datasets: [{
+                        label: 'สัดส่วนสารอาหาร',
+                        data: [totalProtein, totalFat, totalCarb],
+                        backgroundColor: [
+                            colorPrimaryGreen, 
+                            colorYellow,       
+                            colorBrown         
+                        ],
+                        borderColor: colorBackgroundLight, 
+                        borderWidth: 3,
+                        borderRadius: 10,
+                        spacing: 5
+                    }]
+                };
+
+                if (totalMacros > 0) {
+                    new Chart(pieCtx, {
+                        type: 'doughnut', 
+                        data: macrosData,
+                        plugins: [centerTextPlugin, ChartDataLabels], 
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '70%', 
+                            plugins: {
+                                datalabels: {
+                                    display: true,
+                                    color: '#fff', 
+                                    font: { size: 12, weight: 'bold' },
+                                    formatter: (value, ctx) => {
+                                        const sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const percentage = (value / sum * 100).toFixed(0) + '%';
+                                        return percentage;
+                                    }
+                                },
+                                legend: {
+                                    display: true,
+                                    position: 'right', 
+                                    labels: {
+                                        color: colorTextDark,
+                                        boxWidth: 20, 
+                                        padding: 20
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) { label += ': '; }
+                                            if (context.parsed !== null) {
+                                                label += context.parsed.toFixed(1) + ' g';
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    pieCtx.canvas.style.display = 'none';
+                    const chartCard = pieCtx.canvas.closest('.chart-card'); 
+                    if(chartCard) {
+                         chartCard.innerHTML = `
+                            <div class="history-day-header">
+                                <h3>สัดส่วนสารอาหาร (วันนี้)</h3>
+                                <span class="history-day-kcal" id="macros-total-grams"></span>
+                            </div>
+                            <p style="color: var(--text-medium); text-align: center; padding: 20px 0;">ยังไม่มีข้อมูลอาหารสำหรับวันนี้</p>
+                         `;
+                    }
+                }
+            }
+
+            // --- 5. เรียกใช้งานฟังก์ชัน ---
+            updateSummaryCards();
+            renderHistoryLog(); 
+            renderCharts(); 
         });
     </script>
     <script>
+        // (โค้ด Navbar scroll เหมือนเดิม)
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             window.addEventListener('scroll', () => {

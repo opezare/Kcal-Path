@@ -103,6 +103,32 @@ body::-webkit-scrollbar {
     transform: translateY(-2px);
 }
 
+/* (เพิ่มใหม่) สไตล์สำหรับปุ่มรอง (ปุ่มรีเซต) */
+.btn-secondary {
+    background-color: var(--background-gray);
+    color: var(--text-medium);
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+}
+
+/* (เพิ่มใหม่) สไตล์สำหรับกลุ่มปุ่ม (เพิ่ม/รีเซต) */
+.button-group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.button-group-container .btn {
+    width: 100%;
+    box-sizing: border-box; /* เพื่อให้ padding ไม่ทำให้ปุ่มล้น */
+}
+
 /* --- ใน style.css (ส่วน Global Elements) --- */
 .card {
     /* เปลี่ยน background-color เป็นโปร่งใส */

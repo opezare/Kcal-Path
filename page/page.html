@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KcalPath - หน้าแรก</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="../login/auth-guard.js" defer></script>
+    
+    <link rel="stylesheet" href="page.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -19,13 +21,13 @@
                 <span class="logo-text">KcalPath</span>
             </div>
             <nav class="main-nav">
-                <a href="index.html" class="nav-item">หน้าแรก</a>
+                <a href="../page/page.html" class="nav-item active">หน้าแรก</a>
                 <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
-                <a href="../statistics/stats.html" class="nav-item">สถิติ</a>
-                <a href="../bmi/index.html" class="nav-item">คำนวณ</a>
+                <a href="../statistics/stats.html" class="nav-item">ประวัติ</a>
+                <a href="../bmi/calculator.html" class="nav-item">คำนวณ</a>
             </nav>
             <div class="nav-actions">
-                <a href="account.html" class="btn btn-primary">
+                <a href="../login/login.html" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px">
                         <path d="M0 0h24v24H0V0z" fill="none"/>
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -66,9 +68,9 @@
                 <div class="tip-card">
                     <div class="tip-bg" style="background-image: url('r.png');"></div>
                     <div class="tip-content">
-                        <h3>สถิติ</h3>
+                        <h3>ประวัติ</h3>
                         <p>ดูกราฟสรุปผลและติดตามความก้าวหน้าของน้ำหนักและสารอาหารของคุณ</p>
-                        <a href="../statistics/stats.html" class="card-link">ดูสถิติ <span class="arrow">→</span></a>
+                        <a href="../statistics/stats.html" class="card-link">ดูประวัติ <span class="arrow">→</span></a>
                     </div>
                 </div>
 
@@ -77,7 +79,7 @@
                     <div class="tip-content">
                         <h3>คำนวณ BMI & TDEE</h3>
                         <p>ค้นหาค่าดัชนีมวลกาย (BMI) และอัตราการเผาผลาญ (TDEE) เพื่อตั้งเป้าหมาย</p>
-                        <a href="../bmi/index.html" class="card-link">คำนวณเลย <span class="arrow">→</span></a>
+                        <a href="../bmi/calculator.html" class="card-link">คำนวณเลย <span class="arrow">→</span></a>
                     </div>
                 </div>
 
@@ -89,13 +91,13 @@
             <div class="dashboard-grid-layout">
                 <div class="card summary-card large-card calorie-summary">
                     <h3 class="card-title">พลังงานวันนี้</h3>
-                    <div class="progress-circle large" style="--progress: 65%;">
+                    <div class="progress-circle large" style="--progress: 0%;">
                         <div class="circle-content">
-                            <div class="value" id="calorie-value">1230</div>
+                            <div class="value" id="calorie-value">0</div>
                             <div class="unit">kcal</div>
                         </div>
                     </div>
-                    <p class="goal-text">จากเป้าหมาย <span id="daily-calorie-goal">1900</span> kcal</p>
+                    <p class="goal-text">จากเป้าหมาย <span id="daily-calorie-goal">0</span> kcal</p>
                     <a href="../daily/food-log.html" class="card-link">บันทึกอาหารเพิ่มเติม <span class="arrow">→</span></a>
                 </div>
 
@@ -103,27 +105,27 @@
                     <h3 class="card-title">สารอาหารหลัก</h3>
                     <div class="nutrients-grid-display">
                         <div class="nutrient-item">
-                            <div class="progress-circle small" style="--progress: 75%;">
+                            <div class="progress-circle small" style="--progress: 0%;">
                                 <div class="circle-content">
-                                    <div class="value" id="protein-value">63</div>
+                                    <div class="value" id="protein-value">0</div>
                                     <div class="unit">g</div>
                                 </div>
                             </div>
                             <span class="nutrient-label">โปรตีน</span>
                         </div>
                         <div class="nutrient-item">
-                            <div class="progress-circle small yellow-progress" style="--progress: 55%;">
+                            <div class="progress-circle small yellow-progress" style="--progress: 0%;">
                                 <div class="circle-content">
-                                    <div class="value" id="fat-value">37</div>
+                                    <div class="value" id="fat-value">0</div>
                                     <div class="unit">g</div>
                                 </div>
                             </div>
                             <span class="nutrient-label">ไขมัน</span>
                         </div>
                         <div class="nutrient-item">
-                            <div class="progress-circle small brown-progress" style="--progress: 90%;">
+                            <div class="progress-circle small brown-progress" style="--progress: 0%;">
                                 <div class="circle-content">
-                                    <div class="value" id="carb-value">120</div>
+                                    <div class="value" id="carb-value">0</div>
                                     <div class="unit">g</div>
                                 </div>
                             </div>
@@ -137,15 +139,15 @@
                     <h3 class="card-title">สถิติสุขภาพ</h3>
                     <div class="health-stats-grid-display">
                         <div class="stat-item">
-                            <div class="stat-value" id="bmi-value">23.5</div>
+                            <div class="stat-value" id="bmi-value">0</div>
                             <div class="stat-label">BMI</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value" id="weight-value">70.2</div>
+                            <div class="stat-value" id="weight-value">0</div>
                             <div class="stat-label">น้ำหนัก (kg)</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value" id="bmr-value">1782</div>
+                            <div class="stat-value" id="bmr-value">0</div>
                             <div class="stat-label">BMR (kcal)</div>
                         </div>
                     </div>
@@ -157,40 +159,88 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const dailyData = {
-                calories: 1230,
-                protein: 63,
-                fat: 37,
-                carb: 120,
-                sodium: 1400,
-                bmi: 23.5,
-                weight: 70.2,
-                height: 173,
-                bmr: 1782,
-                daily_calorie_goal: 1900,
-                protein_goal: 85,
-                fat_goal: 65,
-                carb_goal: 220
-            };
 
-            // อัปเดตค่าตัวเลขบนหน้าแดชบอร์ด
-            document.getElementById('calorie-value').textContent = dailyData.calories;
-            document.getElementById('daily-calorie-goal').textContent = dailyData.daily_calorie_goal;
-            document.getElementById('protein-value').textContent = dailyData.protein;
-            document.getElementById('fat-value').textContent = dailyData.fat;
-            document.getElementById('carb-value').textContent = dailyData.carb;
-            document.getElementById('bmi-value').textContent = dailyData.bmi;
-            document.getElementById('weight-value').textContent = dailyData.weight;
-            document.getElementById('bmr-value').textContent = dailyData.bmr;
+            /**
+             * ฟังก์ชันสำหรับอัปเดตค่าตัวเลขพร้อมปรับขนาดฟอนต์อัตโนมัติ
+             * @param {HTMLElement} element - The DOM element to update (e.g., <div class="value">)
+             * @param {string} value - The text value to display (e.g., "15049" or "1500.0")
+             */
+            function updateValueAndFontSize(element, value) {
+                if (!element) return; // กัน Error ถ้าหา element ไม่เจอ
+                
+                element.textContent = value;
+                const parentCircle = element.closest('.progress-circle');
+                if (!parentCircle) return;
 
-            // อัปเดตวงกลมแสดงผล
-            document.querySelector('.summary-card.calorie-summary .progress-circle.large').style.setProperty('--progress', (dailyData.calories / dailyData.daily_calorie_goal) * 100);
-            document.querySelector('.nutrient-summary .nutrient-item:nth-child(1) .progress-circle').style.setProperty('--progress', (dailyData.protein / dailyData.protein_goal) * 100);
-            document.querySelector('.nutrient-summary .nutrient-item:nth-child(2) .progress-circle').style.setProperty('--progress', (dailyData.fat / dailyData.fat_goal) * 100);
-            document.querySelector('.nutrient-summary .nutrient-item:nth-child(3) .progress-circle').style.setProperty('--progress', (dailyData.carb / dailyData.carb_goal) * 100);
+                const valueLength = value.toString().length;
+                
+                // ล้างค่า style ที่อาจค้างไว้ก่อน (เพื่อให้กลับไปใช้ค่าจาก CSS)
+                element.style.fontSize = ''; 
+
+                // ปรับขนาดฟอนต์ตามขนาดวงกลมและความยาวของตัวอักษร
+                if (parentCircle.classList.contains('large')) {
+                    if (valueLength > 4) { // 5+ ตัวอักษร เช่น 15049
+                        element.style.fontSize = '2.8em'; // ลดขนาดลง
+                    } 
+                    // ถ้าไม่ (น้อยกว่า 4) ก็จะใช้ค่า default จาก CSS (3.5em)
+                } else if (parentCircle.classList.contains('small')) {
+                    if (valueLength > 5) { // 6+ ตัวอักษร เช่น 1500.0
+                        element.style.fontSize = '1.3em'; // ลดขนาดลง
+                    } else if (valueLength > 4) { // 5 ตัวอักษร เช่น 150.0
+                        element.style.fontSize = '1.5em'; // ลดขนาดลงเล็กน้อย
+                    }
+                    // ถ้าไม่ (น้อยกว่า 4) ก็จะใช้ค่า default จาก CSS (1.8em)
+                }
+            }
+
+            // --- 1. โหลดข้อมูลจริงจาก LocalStorage ---
+            const inputs = JSON.parse(localStorage.getItem('kcalPathInputs'));
+            const metrics = JSON.parse(localStorage.getItem('kcalPathMetrics'));
+            const bmi = localStorage.getItem('kcalPathBmi');
+            
+            const weight = (inputs && inputs.weight) ? inputs.weight : 0;
+            const bmr = (metrics && metrics.bmr) ? metrics.bmr : 0;
+            
+            // --- 2. โหลดข้อมูลอาหารวันนี้ ---
+            const todayMeals = JSON.parse(localStorage.getItem('kcalPathMeals') || '[]');
+            const todayKcal = todayMeals.reduce((sum, meal) => sum + meal.kcal, 0);
+            const todayProtein = todayMeals.reduce((sum, meal) => sum + meal.protein, 0);
+            const todayFat = todayMeals.reduce((sum, meal) => sum + meal.fat, 0);
+            const todayCarb = todayMeals.reduce((sum, meal) => sum + meal.carb, 0);
+
+            // --- 3. โหลด Goals ---
+            const goalCalories = (metrics && metrics.goalCalories) ? metrics.goalCalories : 1; 
+            const goalProtein = (metrics && metrics.goalProtein) ? metrics.goalProtein : 1;
+            const goalFat = (metrics && metrics.goalFat) ? metrics.goalFat : 1;
+            const goalCarb = (metrics && metrics.goalCarb) ? metrics.goalCarb : 1;
+
+            // --- 4. อัปเดตค่าตัวเลขบนหน้าแดชบอร์ด (ใช้ฟังก์ชันใหม่) ---
+            const calorieValueEl = document.getElementById('calorie-value');
+            const proteinValueEl = document.getElementById('protein-value');
+            const fatValueEl = document.getElementById('fat-value');
+            const carbValueEl = document.getElementById('carb-value');
+
+            // ใช้ฟังก์ชันใหม่ในการอัปเดตค่า
+            updateValueAndFontSize(calorieValueEl, todayKcal.toFixed(0));
+            updateValueAndFontSize(proteinValueEl, todayProtein.toFixed(1));
+            updateValueAndFontSize(fatValueEl, todayFat.toFixed(1));
+            updateValueAndFontSize(carbValueEl, todayCarb.toFixed(1));
+
+            // อัปเดตค่าอื่นๆ ที่อยู่นอกวงกลม
+            document.getElementById('daily-calorie-goal').textContent = goalCalories.toFixed(0);
+            document.getElementById('bmi-value').textContent = parseFloat(bmi).toFixed(1) || 0;
+            document.getElementById('weight-value').textContent = weight;
+            document.getElementById('bmr-value').textContent = bmr;
+
+            // --- 5. อัปเดตวงกลมแสดงผล ---
+            document.querySelector('.summary-card.calorie-summary .progress-circle.large').style.setProperty('--progress', (todayKcal / goalCalories) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(1) .progress-circle').style.setProperty('--progress', (todayProtein / goalProtein) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(2) .progress-circle').style.setProperty('--progress', (todayFat / goalFat) * 100);
+            document.querySelector('.nutrient-summary .nutrient-item:nth-child(3) .progress-circle').style.setProperty('--progress', (todayCarb / goalCarb) * 100);
         });
     </script>
     <script>
+        // (โค้ด Navbar scroll เหมือนเดิม)
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             window.addEventListener('scroll', () => {

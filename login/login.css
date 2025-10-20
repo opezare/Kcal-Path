@@ -1,7 +1,5 @@
-
 /* ==========================================================================
    Kcal Path — Global Styles
-   Split into logical sections with verbose comments for easy maintenance.
    ========================================================================== */
 
 /* 1) CSS Reset & Base ------------------------------------------------------ */
@@ -29,6 +27,10 @@ html, body {
   --panel: #ffffff;
   --warn: #ef4444;               /* red-500 */
   --focus: 0 0 0 3px rgba(22,163,74,.35);
+  /* (เพิ่ม) สีจาก page.css เผื่อใช้ */
+  --primary-green: #4CAF50; 
+  --text-light: #9e9e9e; 
+  --border-color: #e2e8f0; /* ใช้ตัวแปรเดียวกัน */
 }
 
 /* 2) Utilities ------------------------------------------------------------- */
@@ -46,12 +48,16 @@ html, body {
   box-shadow: 0 10px 20px rgba(2, 6, 23, .04);
 }
 
-.stack { display: grid; gap: 16px; }
-.stack-lg { gap: 24px; }
+.stack { display: grid; gap: 8px; } /* (แก้ไข) ลด gap ลงเล็กน้อย */
+.stack-lg { display: grid; gap: 24px; } /* คง gap เดิมสำหรับ .stack-lg */
 .row { display: flex; gap: 12px; align-items: center; }
 .space-between { display: flex; justify-content: space-between; align-items: center; }
 
-label { font-weight: 600; }
+label { 
+    font-weight: 600; 
+    margin-bottom: 4px; /* (เพิ่ม) ระยะห่างใต้ label */
+    display: block; /* ทำให้ label ขึ้นบรรทัดใหม่ */
+}
 small, .hint { color: var(--muted); font-size: 12px; }
 
 input[type="text"],
@@ -129,6 +135,7 @@ input:focus {
 .btn-ghost {
   background: transparent;
   color: var(--ink);
+  padding: 12px 0; /* (ปรับ) ลด padding ปุ่ม ghost */
 }
 .btn-outline {
   background: #fff;
@@ -180,7 +187,82 @@ input:focus {
 @media (max-width: 640px){
   .grid-2 { grid-template-columns: 1fr; }
 }
-.error { color: var(--warn); font-size: 12px; }
+.error { 
+    color: var(--warn); 
+    font-size: 12px; 
+    min-height: 1.5em; /* จองพื้นที่ไว้เผื่อมี error */
+}
 
 /* 7) Footer ---------------------------------------------------------------- */
 .footer { color: var(--muted); font-size: 12px; text-align: center; padding: 32px 0; }
+
+/* (แก้ไข) Auth Tabs & Forms --------------------------------------------- */
+.auth-card {
+  padding: 30px 40px;
+}
+
+.auth-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: var(--text-light, #999);
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; 
+  left: 0;
+  width: 100%;
+  height: 3px;
+  /* (แก้ไข) ใช้ --accent แทน --primary-green */
+  background-color: var(--accent, #16a34a); 
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tab-btn.active {
+   /* (แก้ไข) ใช้ --accent แทน --primary-green */
+  color: var(--accent, #16a34a); 
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+/* (แก้ไข) ซ่อน/แสดง .auth-section */
+.auth-section {
+  display: none; 
+}
+.auth-section.active-section {
+  display: block; 
+}
+
+/* (ลบ) ไม่ต้องใช้สไตล์ซ่อน/แสดง .auth-form โดยตรงแล้ว */
+/* .auth-form { display: none; } */
+/* .auth-form.active-form { display: flex; } */
+
+.form-title {
+    margin-bottom: 25px !important; /* (ปรับ) เพิ่มช่องว่างใต้หัวข้อ */
+    font-size: 1.8em; /* (ปรับ) ขนาดหัวข้อฟอร์ม */
+}
+
+#loginForm .space-between {
+    margin-top: 20px; /* (ปรับ) เพิ่มช่องว่างบนปุ่ม login */
+}
+#registerForm .center {
+    margin-top: 20px; /* (ปรับ) เพิ่มช่องว่างบนปุ่ม register */
+}

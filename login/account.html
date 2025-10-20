@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KcalPath - บัญชีของฉัน</title>
+    <script src="auth-guard.js" defer></script> 
+    
+    <link rel="stylesheet" href="../page/page.css"> 
+    <link rel="stylesheet" href="account.css"> 
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-content"> 
+            <div class="logo">
+                <span class="logo-text">KcalPath</span>
+            </div>
+            <nav class="main-nav">
+                 <a href="../page/page.html" class="nav-item">หน้าแรก</a>
+                 <a href="../daily/food-log.html" class="nav-item">บันทึกอาหาร</a>
+                 <a href="../statistics/stats.html" class="nav-item">ประวัติ</a>
+                 <a href="../bmi/calculator.html" class="nav-item">คำนวณ</a>
+                 <a href="account.html" class="nav-item active">บัญชีของฉัน</a> 
+            </nav>
+            <div class="nav-actions">
+                 <button type="button" id="logout-btn" class="btn btn-danger"> 
+                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                      <span>ออกจากระบบ</span>
+                 </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content page-content container"> 
+        <h1 class="page-header-title">บัญชีของฉัน</h1>
+
+        <div class="account-card"> <form id="account-form" class="stack-lg">
+                <h2 class="card-title">ข้อมูลโปรไฟล์</h2>
+
+                <div class="stack form-group readonly">
+                    <label for="acc-email">อีเมล</label>
+                    <input id="acc-email" type="email" value="-" readonly>
+                    </div>
+
+                <hr class="form-divider">
+
+                <div class="form-group">
+                    <label>เพศ</label>
+                    <div class="radio-group">
+                         <label class="option"><input type="radio" name="gender" value="male" disabled> ชาย</label>
+                         <label class="option"><input type="radio" name="gender" value="female" disabled> หญิง</label>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="stack form-group">
+                        <label for="acc-age">อายุ (ปี)</label>
+                        <input id="acc-age" type="number" min="5" max="120" readonly>
+                    </div>
+                    <div class="stack form-group">
+                        <label for="acc-weight">น้ำหนัก (kg)</label>
+                        <input id="acc-weight" type="number" step="0.1" min="20" max="300" readonly>
+                    </div>
+                    <div class="stack form-group">
+                        <label for="acc-height">ส่วนสูง (cm)</label>
+                        <input id="acc-height" type="number" min="80" max="250" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group custom-select-container" id="activity-select-container">
+                    <label>ระดับกิจกรรม</label>
+                    <div class="select-display" id="activity-display" tabindex="0"> 
+                        <span>ไม่ออกกำลังกายเลย</span> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    
+                    <ul class="select-options" id="activity-options">
+                        <li data-value="1.2">
+                            <div class="option-left"><span class="option-primary">ไม่ออกกำลังกายเลย</span></div>
+                        </li>
+                        <li data-value="1.375">
+                            <div class="option-left"><span class="option-primary">ออกกำลังกายเบา (1-3 วัน/สัปดาห์)</span></div>
+                        </li>
+                        <li data-value="1.55">
+                            <div class="option-left"><span class="option-primary">ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)</span></div>
+                        </li>
+                        <li data-value="1.725">
+                            <div class="option-left"><span class="option-primary">ออกกำลังกายหนัก (6-7 วัน/สัปดาห์)</span></div>
+                        </li>
+                        <li data-value="1.9">
+                            <div class="option-left"><span class="option-primary">ออกกำลังกายหนักมาก (2 ครั้ง/วัน)</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label>เป้าหมาย</label>
+                     <div class="radio-group">
+                        <label class="option"><input type="radio" name="goal" value="lose" disabled> ลดน้ำหนัก</label>
+                        <label class="option"><input type="radio" name="goal" value="maintain" disabled> คงที่</label>
+                        <label class="option"><input type="radio" name="goal" value="gain" disabled> เพิ่มน้ำหนัก</label>
+                    </div>
+                </div>
+
+                <div class="profile-summary">
+                    <p>BMI: <strong id="acc-bmi">-</strong> (<span id="acc-bmi-cat">-</span>)</p>
+                    <p>TDEE: <strong id="acc-tdee">-</strong> kcal/วัน</p>
+                    <p>เป้าหมาย: <strong id="acc-goal-cal">-</strong> kcal/วัน</p>
+                </div>
+
+                <div id="action-buttons" class="button-group">
+                    <button type="button" id="edit-profile-btn" class="btn btn-outline">แก้ไขข้อมูล</button>
+                    <button type="submit" id="save-profile-btn" class="btn btn-primary hidden">บันทึก</button>
+                    <button type="button" id="cancel-edit-btn" class="btn btn-secondary hidden">ยกเลิก</button>
+                </div>
+                 <div id="form-message" class="success-message hidden"></div>
+                 <div id="form-error" class="error"></div>
+
+            </form>
+
+            <hr class="form-divider">
+
+            <div class="stack-lg">
+                <h2 class="card-title">การตั้งค่าอื่นๆ</h2>
+                <div class="button-group">
+                     <button type="button" class="btn btn-outline" disabled>เปลี่ยนรหัสผ่าน</button>
+                     <button type="button" class="btn btn-danger" disabled>ลบบัญชี</button> 
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="account.js"></script>
+    <script>
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

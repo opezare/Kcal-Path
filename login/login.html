@@ -10,36 +10,57 @@
 <body>
   <header class="navbar">
     <div class="container space-between">
-      <div class="brand">www<span class="dot">.</span>kcalpath<span class="dot">.</span>com</div>
-      <span class="badge">login</span>
+      <div class="brand"><span class="dot"></span>kcalpath<span class="dot"></span></div>
     </div>
   </header>
 
   <main class="container">
-    <div class="card" style="max-width:600px; margin: 60px auto; padding: 32px;">
+    <div class="card auth-card" style="max-width:600px; margin: 60px auto; padding: 32px;">
       <div class="stack-lg">
-        <div>
-          <h1 class="center" style="margin:0">เข้าสู่ระบบ</h1>
-          <p class="center hint" style="margin-top:8px">ตัวอย่างหน้า Login ตามดีไซน์ในไฟล์</p>
+
+        <div class="auth-tabs">
+          <button type="button" class="tab-btn active" data-tab="login">เข้าสู่ระบบ</button>
+          <button type="button" class="tab-btn" data-tab="register">ลงทะเบียน</button>
         </div>
 
-        <form id="loginForm" class="stack">
-          <div class="stack">
-            <label for="email">อีเมล</label>
-            <input id="email" type="email" placeholder="you@example.com" autocomplete="username" required>
-          </div>
-          <div class="stack">
-            <label for="password">รหัสผ่าน</label>
-            <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
-          </div>
+        <div id="loginSection" class="auth-section active-section">
+          <h1 class="center form-title" style="margin:0 0 20px 0;">เข้าสู่ระบบ</h1>
+          <form id="loginForm" class="auth-form stack"> 
+            <label for="login-email">อีเมล</label>
+            <input id="login-email" type="email" placeholder="you@example.com" autocomplete="username" required>
+            
+            <label for="login-password">รหัสผ่าน</label>
+            <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+            
+            <div id="loginError" class="error"></div>
+            
+            <div class="space-between" style="align-items: center; margin-top: 15px;">
+              <button type="button" id="forgot" class="btn btn-ghost">ลืมรหัสผ่าน?</button>
+              <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+            </div>
+          </form>
+        </div>
 
-          <div id="loginError" class="error"></div>
+        <div id="registerSection" class="auth-section">
+          <h1 class="center form-title" style="margin:0 0 20px 0;">ลงทะเบียน</h1>
+          <form id="registerForm" class="auth-form stack">
+            <label for="register-email">อีเมล</label>
+            <input id="register-email" type="email" placeholder="you@example.com" required>
+            
+            <label for="register-password">รหัสผ่าน</label>
+            <input id="register-password" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" required>
+            
+            <label for="register-confirm-password">ยืนยันรหัสผ่าน</label>
+            <input id="register-confirm-password" type="password" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+            
+            <div id="registerError" class="error"></div>
+            
+            <div class="center" style="margin-top: 15px;">
+                <button type="submit" class="btn btn-primary">ลงทะเบียน</button>
+            </div>
+          </form>
+        </div>
 
-          <div class="space-between">
-            <button type="button" id="forgot" class="btn btn-ghost">Forgot Password</button>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-          </div>
-        </form>
       </div>
     </div>
     <div class="footer">© 2025 Kcal Path — Official</div>
